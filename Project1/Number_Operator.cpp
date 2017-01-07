@@ -1,0 +1,279 @@
+#include "Number.h"
+#include "Number_Operator.h"
+#include <string>
+#include <algorithm> 
+
+namespace nee {
+	std::string getBigString(std::string num1, std::string num2) {
+		if (num1.size() > num2.size()) {
+			return num1;
+		}
+		else if (num1.size() < num2.size())
+		{
+			return num2;
+		}
+
+		if (num1 == num2) {
+			return num1;
+		}
+
+		for (size_t i = 0; i < num1.size(); ++i) {
+			if (num1[i] > num2[i])
+			{
+				return num1;
+			}
+			else if (num1[i] < num2[i])
+			{
+				return num2;
+			}
+		}
+		return num1;
+	}
+	int getNumber(int a) {
+		if (a >= 0) {
+			return a;
+		}
+		return 10 + a;
+	}
+
+	std::string addStrings(std::string num1, std::string num2) {
+		int i = num1.size() - 1;
+		int j = num2.size() - 1;
+		int carry = 0;
+		std::string res = "";
+		while (i >= 0 || j >= 0 || carry) {
+			long sum = 0;
+			if (i >= 0) { sum += (num1[i] - '0'); i--; }
+			if (j >= 0) { sum += (num2[j] - '0'); j--; }
+			sum += carry;
+			carry = sum / 10;
+			sum = sum % 10;
+			res = res + std::to_string(sum);
+		}
+		std::reverse(res.begin(), res.end());
+		return res;
+	}
+	std::string minusStrings(std::string num1, std::string num2) {
+		if (num1 == num2) {
+			return std::string("0");
+		}
+		std::string temp;
+
+		size_t bigsize = num1.size() > num2.size() ? num1.size() : num2.size();
+		size_t smallsize = num1.size() > num2.size() ? num2.size() : num1.size();
+
+		std::string bigstr = getBigString(num1, num2);
+		std::string smallstr = (bigstr == num1) ? num2 : num1;
+
+		std::reverse(bigstr.begin(), bigstr.end());
+		std::reverse(smallstr.begin(), smallstr.end());
+		int carry = 0;
+
+		for (size_t i = 0;i < bigsize; ++i) {
+			if (i < smallsize) {
+				int number =static_cast<int>( bigstr[i] - smallstr[i] - carry);
+				if (number < 0) 
+					carry = 1;
+				else carry = 0;
+				temp += std::to_string(getNumber(number));
+			}
+			else {
+				int number = static_cast<int>(bigstr[i] - '0' - carry);
+				if (number < 0)
+					carry = 1;
+				else carry = 0;
+				temp += std::to_string(getNumber(number));
+
+			}
+
+		}
+		std::reverse(temp.begin(), temp.end());
+		auto it = temp.begin();
+		for (; it != temp.end(); ++it) {
+			if (*it != '0') {
+				break;
+			}
+		}
+		
+		if (num1 != getBigString(num1, num2)) {
+			return ("-" + std::string(it, temp.end()));
+		}
+		return std::string(it, temp.end());
+	}
+	std::string multiplyStrings(std::string num1, std::string num2) {
+		std::string bigstr = getBigString(num1, num2);
+		std::string smallstr = (bigstr == num1) ? num2 : num1;
+		if (bigstr == std::string("0") || smallstr == std::string("0")) {
+			return std::string("0");
+		}
+		std::string number = std::string("0");
+		while (true) {
+			if (smallstr != std::string("0")) {
+				number = addStrings(number, bigstr);
+				smallstr = minusStrings(smallstr, std::string("1"));
+			}
+			else break;
+		}
+		return number;
+	}
+
+	//+
+	Integer operator+(const Integer& a, const Integer& b) {
+		std::string tempa = a.ToString();
+		std::string tempb = b.ToString();
+		Integer temp;
+		if (tempa[0] != '-'&&tempb[0] != '-') {
+			temp = Integer(addStrings(tempa, tempb));
+		}else if (tempa[0] == '-'&&tempb[0] != '-') {	
+			temp = b - Integer(std::string(tempa.begin() + 1, tempa.end()));
+		}else if (tempa[0] != '-'&&tempb[0] == '-') {
+			temp = a - b;
+		}else if (tempa[0] == '-'&&tempb[0] == '-') {
+			temp = Integer("-" + (Integer(std::string(tempa.begin() + 1, tempa.end())) + Integer(std::string(tempb.begin() + 1, tempb.end())))
+				.ToString());
+		}
+
+		return temp;
+	}
+	Float operator+(const Integer& a, const Float& b) {
+		return Float();
+	}
+	Efloat operator+(const Integer& a, const Efloat& b) {
+		return Efloat();
+	}
+	Float operator+(const Float& a, const Integer& b) {
+		return Float();
+	}
+	Float operator+(const Float& a, const Float& b) {
+		return Float();
+	}
+	Efloat operator+(const Float& a, const Efloat& b) {
+		return Efloat();
+	}
+	Efloat operator+(const Efloat& a, const Integer& b) {
+		return Efloat();
+	}
+	Efloat operator+(const Efloat& a, const Float& b) {
+		return Efloat();
+	}
+	Efloat operator+(const Efloat& a, const Efloat& b) {
+		return Efloat();
+	}
+	//-
+	Integer operator-(const Integer& a, const Integer& b) {
+		std::string tempa = a.ToString();
+		std::string tempb = b.ToString();
+		Integer temp;
+		if (tempa[0] != '-'&&tempb[0] != '-') {
+			temp = Integer(minusStrings(tempa, tempb));
+		}
+		else if (tempa[0] == '-'&&tempb[0] != '-') {
+			temp = Integer("-" + (Integer(std::string(tempa.begin() + 1, tempa.end())) + b).ToString());
+		}
+		else if (tempa[0] != '-'&&tempb[0] == '-') {
+			temp = a + Integer(std::string(tempb.begin() + 1, tempb.end()));
+		}
+		else if (tempa[0] == '-'&&tempb[0] == '-') {
+			temp = Integer(minusStrings(std::string(tempb.begin() +1 ,tempb.end()), std::string(tempa.begin() + 1, tempa.end())));
+		}
+
+		return temp;
+	}
+	Float operator-(const Integer& a, const Float& b) {
+		return Float();
+	}
+	Efloat operator-(const Integer& a, const Efloat& b) {
+		return Efloat();
+	}
+	Float operator-(const Float& a, const Integer& b) {
+		return Float();
+	}
+	Float operator-(const Float& a, const Float& b) {
+		return Float();
+	}
+	Efloat operator-(const Float& a, const Efloat& b) {
+		return Efloat();
+	}
+	Efloat operator-(const Efloat& a, const Integer& b) {
+		return Efloat();
+	}
+	Efloat operator-(const Efloat& a, const Float& b) {
+		return Efloat();
+	}
+	Efloat operator-(const Efloat& a, const Efloat& b) {
+		return Efloat();
+	}
+	//*
+	Integer operator*(const Integer& a, const Integer& b) {
+		std::string tempa = a.ToString();
+		std::string tempb = b.ToString();
+		Integer temp;
+		if (tempa[0] != '-'&&tempb[0] != '-') {
+			temp = Integer(multiplyStrings(tempa, tempb));
+		}
+		else if (tempa[0] == '-'&&tempb[0] != '-') {
+			temp = Integer("-" + (Integer(std::string(tempa.begin() + 1, tempa.end())) * b).ToString());
+		}
+		else if (tempa[0] != '-'&&tempb[0] == '-') {
+			temp = Integer("-" + (Integer(std::string(tempb.begin() + 1, tempb.end())) * a).ToString());
+		}
+		else if (tempa[0] == '-'&&tempb[0] == '-') {
+			temp = Integer(multiplyStrings(std::string(tempa.begin() + 1, tempa.end()), std::string(tempb.begin() + 1, tempb.end())));
+		}
+
+		return temp;
+	}
+	Float operator*(const Integer& a, const Float& b) {
+		return Float();
+	}
+	Efloat operator*(const Integer& a, const Efloat& b) {
+		return Efloat();
+	}
+	Float operator*(const Float& a, const Integer& b) {
+		return Float();
+	}
+	Float operator*(const Float& a, const Float& b) {
+		return Float();
+	}
+	Efloat operator*(const Float& a, const Efloat& b) {
+		return Efloat();
+	}
+	Efloat operator*(const Efloat& a, const Integer& b) {
+		return Efloat();
+	}
+	Efloat operator*(const Efloat& a, const Float& b) {
+		return Efloat();
+	}
+	Efloat operator*(const Efloat& a, const Efloat& b) {
+		return Efloat();
+	}
+	// /
+	Integer operator/(const Integer& a, const Integer& b) {
+		return Integer();
+	}
+	Float operator/(const Integer& a, const Float& b) {
+		return Float();
+	}
+	Efloat operator/(const Integer& a, const Efloat& b) {
+		return Efloat();
+	}
+	Float operator/(const Float& a, const Integer& b) {
+		return Float();
+	}
+	Float operator/(const Float& a, const Float& b) {
+		return Float();
+	}
+	Efloat operator/(const Float& a, const Efloat& b) {
+		return Efloat();
+	}
+	Efloat operator/(const Efloat& a, const Integer& b) {
+		return Efloat();
+	}
+	Efloat operator/(const Efloat& a, const Float& b) {
+		return Efloat();
+	}
+	Efloat operator/(const Efloat& a, const Efloat& b) {
+		return Efloat();
+	}
+	
+}

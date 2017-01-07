@@ -7,7 +7,7 @@ namespace nee {
 	class  Integer :public Object {
 	public:
 		Integer()noexcept :integer_str() {}
-		Integer(std::string _str)noexcept :integer_str(_str) {}
+		Integer(const std::string &_str)noexcept :integer_str(_str) {}
 		Integer(const Integer & r)noexcept : integer_str(r.integer_str) {}
 		Integer& operator=(const Integer & r)noexcept {
 			this->integer_str = r.integer_str;

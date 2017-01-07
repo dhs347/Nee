@@ -18,16 +18,7 @@
     <ClCompile Include="nee.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Float.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Function.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Operator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Integer.cpp">
+    <ClCompile Include="Number_Operator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,6 +39,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Number.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Number_Operator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="String.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
