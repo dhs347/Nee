@@ -3,6 +3,9 @@
 #include <string>
 #include <algorithm> 
 
+
+#include <vector>
+
 namespace nee {
 	std::string getBigString(std::string num1, std::string num2) {
 		if (num1.size() > num2.size()) {
@@ -37,8 +40,8 @@ namespace nee {
 	}
 
 	std::string addStrings(std::string num1, std::string num2) {
-		int i = num1.size() - 1;
-		int j = num2.size() - 1;
+		int i = static_cast<int>(num1.size() - 1);
+		int j = static_cast<int>(num2.size() - 1);
 		int carry = 0;
 		std::string res = "";
 		while (i >= 0 || j >= 0 || carry) {
@@ -100,7 +103,8 @@ namespace nee {
 		}
 		return std::string(it, temp.end());
 	}
-	std::string multiplyStrings(std::string num1, std::string num2) {
+	//fix
+	std::string __multiplyStrings(std::string num1, std::string num2) {
 		std::string bigstr = getBigString(num1, num2);
 		std::string smallstr = (bigstr == num1) ? num2 : num1;
 		if (bigstr == std::string("0") || smallstr == std::string("0")) {
@@ -116,12 +120,54 @@ namespace nee {
 		}
 		return number;
 	}
+	std::string multiplyStrings(std::string num1, std::string num2) {
+		std::string bigstr = getBigString(num1, num2);
+		std::string smallstr = (bigstr == num1) ? num2 : num1;
+		if (bigstr == std::string("0") || smallstr == std::string("0")) {
+			return std::string("0");
+		}
+		std::reverse(smallstr.begin(), smallstr.end());
+		std::vector <std::string> vectorNumber;
+		for (size_t i = 0; i < smallstr.size();++i) {
+			vectorNumber.push_back(__multiplyStrings(bigstr, std::string(1, static_cast<char>(smallstr[i]))) + std::string(i,'0')) ;
+		}
+		std::string res("0");
+		for (size_t i = 0; i < vectorNumber.size(); ++i) {
+			res = addStrings(res, vectorNumber[i]);
+		}
+		return res;
+	}
+	//todo Ì«Âý
+	std::string divideStrings(std::string num1, std::string num2) {
 
+
+		if (num2 == std::string("0")) {
+			return std::string("inf");
+		}
+		if (num2 == num1) {
+			return std::string("1");
+		}
+
+		std::string res("0");
+
+		while (true) {
+	
+			if (num2 == getBigString(num1, num2)) {
+				break;
+			}
+			num1 = minusStrings(num1, num2);
+			res = addStrings(res, std::string("1"));
+
+		}
+		return res;
+	}
 	//+
 	Integer operator+(const Integer& a, const Integer& b) {
+		
 		std::string tempa = a.ToString();
 		std::string tempb = b.ToString();
 		Integer temp;
+
 		if (tempa[0] != '-'&&tempb[0] != '-') {
 			temp = Integer(addStrings(tempa, tempb));
 		}else if (tempa[0] == '-'&&tempb[0] != '-') {	
@@ -249,7 +295,26 @@ namespace nee {
 	}
 	// /
 	Integer operator/(const Integer& a, const Integer& b) {
-		return Integer();
+
+		std::string tempa = a.ToString();
+		std::string tempb = b.ToString();
+		Integer temp;
+		if (tempa[0] != '-'&&tempb[0] != '-') {
+			temp = Integer(divideStrings(tempa, tempb));
+		}
+		else if (tempa[0] == '-'&&tempb[0] != '-') {
+			temp = Integer("-" + (Integer(std::string(tempa.begin() + 1, tempa.end())) / b).ToString());
+		}
+		else if (tempa[0] != '-'&&tempb[0] == '-') {
+			temp = Integer("-" + (a / Integer(std::string(tempb.begin() + 1, tempb.end()))).ToString());
+		}
+		else if (tempa[0] == '-'&&tempb[0] == '-') {
+			temp = Integer(divideStrings(std::string(tempa.begin() + 1, tempa.end()), std::string(tempb.begin() + 1, tempb.end())));
+		}
+		if (temp.ToString() == std::string("-0")) {
+			temp = Integer(std::string("0"));
+		}
+		return temp;
 	}
 	Float operator/(const Integer& a, const Float& b) {
 		return Float();
