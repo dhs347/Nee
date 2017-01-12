@@ -7,6 +7,12 @@
 #include <iostream>
 
 namespace nee {
+	std::string addStrings(std::string num1, std::string num2);
+	std::string minusStrings(std::string num1, std::string num2);
+	std::string multiplyStrings(std::string num1, std::string num2);
+	std::string divideStrings(std::string num1, std::string num2);
+
+
 	std::string getBigString(std::string num1, std::string num2) {
 		if (num1.size() > num2.size()) {
 			return num1;
@@ -37,6 +43,37 @@ namespace nee {
 			return a;
 		}
 		return 10 + a;
+	}
+
+	std::string getRemainder(std::string num1, std::string num2) {
+		//fix 消除前导0
+		num1 = Integer(num1).ToString();
+		num2 = Integer(num2).ToString();
+		//
+
+		if (num2 == std::string("0")) {
+			//todo
+			throw;
+		}
+		if (num2 == num1) {
+			return std::string("0");
+		}
+		if (num2 == getBigString(num1,num2)) {
+			return num1;
+		}
+
+		while (true) {
+
+			if (num2 == getBigString(num1, num2)) {
+				break;
+			}
+			num1 = minusStrings(num1, num2);
+		}
+
+		if (num1 == num2) {
+			return std::string("0");
+		}
+		return num1;
 	}
 
 	std::string addStrings(std::string num1, std::string num2) {
@@ -137,12 +174,15 @@ namespace nee {
 		}
 		return res;
 	}
-	//todo 太慢
-	std::string divideStrings(std::string num1, std::string num2) {
+	//fix
+	std::string __divideStrings(std::string num1, std::string num2) {
 
-
+		//fix 消除前导0
+		num1 = Integer(num1).ToString();
+		num2 = Integer(num2).ToString();
+		//
 		if (num2 == std::string("0")) {
-			return std::string("inf");
+			throw;
 		}
 		if (num2 == num1) {
 			return std::string("1");
@@ -159,11 +199,46 @@ namespace nee {
 			res = addStrings(res, std::string("1"));
 
 		}
+		//fix
+		if (num1 == num2) {
+			res = addStrings(res, std::string("1"));
+		}
+
 		return res;
 	}
-	//todo
-	void _divideStrings() {
-		
+	//fix
+	std::string divideStrings(std::string num1, std::string num2) {
+
+		if (num2 == std::string("0")) {
+			//todo
+			throw;
+		}
+		if (num2 == num1) {
+			return std::string("1");
+		}
+		if (num2 == getBigString(num1, num2)) {
+			return std::string("0");
+		}
+
+		std::string::iterator it = num1.begin() + num2.size();
+		std::string res(num1.begin(), it);
+		std::vector<char> vectorChar;
+		while (true) {
+			if (it == num1.end()) {
+				break;
+			}
+			
+			vectorChar.push_back(__divideStrings(res, num2)[0]);
+			res = getRemainder(res, num2) + std::string(it, it + 1);
+			++it;
+		}
+
+		vectorChar.push_back(__divideStrings(res, num2)[0]);
+		std::string result;
+		for (size_t i = 0; i < vectorChar.size(); ++i) {
+			result.push_back(vectorChar[i]);
+		}
+		return Integer(result).ToString();
 	}
 
 	size_t getFloatPosition(const std::string &str) {
@@ -175,6 +250,8 @@ namespace nee {
 		}
 		return str.size() - 1 - i;
 	}
+
+
 
 	//+
 	Integer operator+(const Integer& a, const Integer& b) {
@@ -311,13 +388,15 @@ namespace nee {
 		return temp;
 	}
 	Float operator*(const Integer& a, const Float& b) {
+
+		//
 		std::string tempa = a.ToString();
 		std::string tempb = b.ToString();
 		size_t times = getFloatPosition(tempb);
 		tempb.erase(tempb.size() - 1 - times, 1);
 		std::string tempStr = (Integer(tempa) * Integer(tempb)).ToString(); /*addStrings(tempa, tempInt.ToString()); error*/
-
 		tempStr.insert(tempStr.size() - times, 1, '.');
+
 		Float tempFloat(tempStr);
 
 		return tempFloat;
@@ -367,13 +446,102 @@ namespace nee {
 		return temp;
 	}
 	Float operator/(const Integer& a, const Float& b) {
-		return Float();
+		std::string tempa = a.ToString();
+		std::string tempb = b.ToString();
+		size_t times = getFloatPosition(tempb);
+		tempb.erase(tempb.size() - 1 - times, 1);
+		std::string tempStr = (Integer(tempa + std::string(16 + times,'0')) / Integer(tempb)).ToString(); /*addStrings(tempa, tempInt.ToString()); error*/
+		//fix
+		if (tempStr[0] == '-') {
+			if (tempStr.size() <= 17) {
+				tempStr = "-0." + std::string(17 - tempStr.size(), '0') + std::string(tempStr.begin() + 1, tempStr.end());
+				if (getFloatPosition(tempStr) == 16) {
+					if (tempStr[tempStr.size() - 1] >= '5') {
+						tempStr = (Integer(tempStr) - Integer(std::string("10"))).ToString();
+					}
+					tempStr.pop_back();
+				}
+			}
+			else {
+				if (tempStr[tempStr.size() - 1] >= '5') {
+					tempStr = (Integer(tempStr) - Integer(std::string("10"))).ToString();
+				}
+				tempStr.insert(tempStr.size() - 16, 1, '.');
+				tempStr.pop_back();
+
+			}
+		}
+		else {
+			if (tempStr.size() <= 16) {
+				tempStr = "0." + std::string(16 - tempStr.size(), '0') + std::string(tempStr.begin(), tempStr.end());
+				if (getFloatPosition(tempStr) == 16) {
+					if (tempStr[tempStr.size() - 1] >= '5') {
+						tempStr = (Integer(tempStr) + Integer(std::string("10"))).ToString();
+					}
+					tempStr.pop_back();
+				}
+			}
+			else {
+				if (tempStr[tempStr.size() - 1] >= '5') {
+					tempStr = (Integer(tempStr) + Integer(std::string("10"))).ToString();
+				}
+				tempStr.insert(tempStr.size() - 16, 1, '.');
+				tempStr.pop_back();
+			}
+		}
+		Float tempFloat(tempStr);
+
+		return tempFloat;
 	}
 	Efloat operator/(const Integer& a, const Efloat& b) {
 		return Efloat();
 	}
 	Float operator/(const Float& a, const Integer& b) {
-		return Float();
+		std::string tempa = a.ToString();
+		std::string tempb = b.ToString();
+		size_t times = getFloatPosition(tempa);
+		tempa.erase(tempa.size() - 1 - times, 1);
+		std::string tempStr = (Integer(tempa + std::string(16, '0')) / Integer(tempb + std::string(times, '0'))).ToString(); /*addStrings(tempa, tempInt.ToString()); error*/
+		if (tempStr[0] == '-') {
+			if (tempStr.size() <= 17) {
+				tempStr = "-0." + std::string(17 - tempStr.size(), '0') + std::string(tempStr.begin() + 1, tempStr.end());
+
+				if (getFloatPosition(tempStr) == 16) {
+					if (tempStr[tempStr.size() - 1] >= '5') {
+						tempStr = (Integer(tempStr) - Integer(std::string("10"))).ToString();
+					}
+					tempStr.pop_back();
+				}
+			}
+			else {
+				if (tempStr[tempStr.size() - 1] >= '5') {
+					tempStr = (Integer(tempStr) - Integer(std::string("10"))).ToString();
+				}
+				tempStr.insert(tempStr.size() - 16, 1, '.'); 
+				tempStr.pop_back();
+			}
+		}
+		else {
+			if (tempStr.size() <= 16) {
+				tempStr = "0." + std::string(16 - tempStr.size(), '0') + std::string(tempStr.begin(), tempStr.end());
+				if (getFloatPosition(tempStr) == 16) {
+					if (tempStr[tempStr.size() - 1] >= '5') {
+						tempStr = (Integer(tempStr) + Integer(std::string("10"))).ToString();//fix
+					}
+					tempStr.pop_back();
+				}
+			}
+			else {
+				if (tempStr[tempStr.size() - 1] >= '5') {
+					tempStr = (Integer(tempStr) + Integer(std::string("10"))).ToString();
+				}
+				tempStr.insert(tempStr.size() - 16, 1, '.');
+				tempStr.pop_back();
+			}
+		}
+		Float tempFloat(tempStr);
+
+		return tempFloat;
 	}
 	Float operator/(const Float& a, const Float& b) {
 		return Float();
@@ -390,5 +558,7 @@ namespace nee {
 	Efloat operator/(const Efloat& a, const Efloat& b) {
 		return Efloat();
 	}
+
+	// % etc todo
 	
 }

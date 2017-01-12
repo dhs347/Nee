@@ -39,9 +39,16 @@ namespace nee {
 					break;
 				}
 			}
-			if(*str.begin() == '-')
-				str = "-"+ std::string(it, str.end());
-			else str = std::string(it, str.end());
+			if (*str.begin() == '-') {
+				if(it!= str.end())
+					str = "-" + std::string(it, str.end());
+				else str = "0";//fix
+			}
+			else {
+				if (it != str.end())
+					str = std::string(it, str.end());
+				else str = "0";
+			}
 		}
 	};
 }
