@@ -2,10 +2,11 @@
 #include "Number_Operator.h"
 
 #include <iostream>
+#include "Tokenizer.h"
 //debug
 namespace nee {
 	std::string getRemainder(std::string num1, std::string num2);
-	std::string  _divideStrings(std::string num1, std::string num2);
+	void Tokenizer(const std::string &filename);
 }
 int main(int argc, char *argv[]){
 	nee::Integer a("2");
@@ -15,8 +16,8 @@ int main(int argc, char *argv[]){
 	nee::Integer d("999");
 	nee::Integer e("10");
 	nee::Integer f("3000");
-	nee::Float g("0.000000000000001");
-	nee::Float h("1.3");
+	nee::Float g("3.01");
+	nee::Float h("-3.0");
 	nee::Integer i("444444342342");
 	nee::Integer j("31");
 
@@ -39,6 +40,8 @@ int main(int argc, char *argv[]){
 	std::cout << (e * f).ToString() << std::endl;
 	std::cout << (g / e).ToString() << std::endl;
 	std::cout << (e / j).ToString() << std::endl;
+	std::cout << (g / h).ToString() << std::endl;
+	nee::Tokenizer("C:\\Users\\42937\\Desktop\\x.bf");
 	//std::cout << (a/zero).ToString() << std::endl;
 	while (true)
 	{

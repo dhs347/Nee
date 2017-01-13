@@ -270,7 +270,6 @@ namespace nee {
 			temp = Integer("-" + (Integer(std::string(tempa.begin() + 1, tempa.end())) + Integer(std::string(tempb.begin() + 1, tempb.end())))
 				.ToString());
 		}
-
 		return temp;
 	}
 	Float operator+(const Integer& a, const Float& b) {
@@ -293,7 +292,21 @@ namespace nee {
 		return b + a;
 	}
 	Float operator+(const Float& a, const Float& b) {
-		return Float();
+
+		size_t timesa = getFloatPosition(a.ToString());
+		size_t timesb = getFloatPosition(b.ToString());
+		size_t bigtimes = timesa > timesb ? timesa : timesb;
+
+		std::string tempa = (a * Integer("1" + std::string(bigtimes, '0'))).ToString();
+		std::string tempb = (b * Integer("1" + std::string(bigtimes, '0'))).ToString();
+		std::string tempStr = (Integer(std::string(tempa.begin(), tempa.end() - 2)) + Integer(std::string(tempb.begin(), tempb.end() - 2))).ToString();
+		//tempStr.insert(tempStr.size() - bigtimes, 1, '.');
+
+		if (tempStr[0] == '-') {
+			tempStr.insert(1,bigtimes,'0');
+		}else tempStr.insert(0, bigtimes, '0');
+		tempStr.insert(tempStr.size() - bigtimes, 1, '.');
+		return Float(tempStr);
 	}
 	Efloat operator+(const Float& a, const Efloat& b) {
 		return Efloat();
@@ -353,7 +366,18 @@ namespace nee {
 		return Float(str);
 	}
 	Float operator-(const Float& a, const Float& b) {
-		return Float();
+		size_t timesa = getFloatPosition(a.ToString());
+		size_t timesb = getFloatPosition(b.ToString());
+		size_t bigtimes = timesa > timesb ? timesa : timesb;
+		std::string tempa = (a * Integer("1" + std::string(bigtimes, '0'))).ToString();
+		std::string tempb = (b * Integer("1" + std::string(bigtimes, '0'))).ToString();
+		std::string tempStr = (Integer(std::string(tempa.begin(), tempa.end() - 2)) - Integer(std::string(tempb.begin(), tempb.end() - 2))).ToString();
+		if (tempStr[0] == '-') {
+			tempStr.insert(1, bigtimes, '0');
+		}
+		else tempStr.insert(0, bigtimes, '0');
+		tempStr.insert(tempStr.size() - bigtimes, 1, '.');
+		return Float(tempStr);
 	}
 	Efloat operator-(const Float& a, const Efloat& b) {
 		return Efloat();
@@ -408,7 +432,18 @@ namespace nee {
 		return b * a;
 	}
 	Float operator*(const Float& a, const Float& b) {
-		return Float();
+		size_t timesa = getFloatPosition(a.ToString());
+		size_t timesb = getFloatPosition(b.ToString());
+		size_t bigtimes = timesa > timesb ? timesa : timesb;
+		std::string tempa = (a * Integer("1" + std::string(bigtimes, '0'))).ToString();
+		std::string tempb = (b * Integer("1" + std::string(bigtimes, '0'))).ToString();
+		std::string tempStr = (Integer(std::string(tempa.begin(), tempa.end() - 2)) * Integer(std::string(tempb.begin(), tempb.end() - 2))).ToString();
+		if (tempStr[0] == '-') {
+			tempStr.insert(1,2 * bigtimes, '0');
+		}
+		else tempStr.insert(0,2 * bigtimes, '0');
+		tempStr.insert(tempStr.size() - 2 * bigtimes, 1, '.');
+		return Float(tempStr);
 	}
 	Efloat operator*(const Float& a, const Efloat& b) {
 		return Efloat();
@@ -544,7 +579,12 @@ namespace nee {
 		return tempFloat;
 	}
 	Float operator/(const Float& a, const Float& b) {
-		return Float();
+		std::string tempa = a.ToString();
+		size_t times = getFloatPosition(tempa);
+		tempa.erase(tempa.size() - 1 - times, 1);
+		
+
+		return Float(Integer(tempa)/ (b * Integer("1" + std::string(times, '0'))));
 	}
 	Efloat operator/(const Float& a, const Efloat& b) {
 		return Efloat();
