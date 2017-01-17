@@ -31,23 +31,19 @@ namespace nee {
 		return i;
 	}
 	inline void Tokenizer(const std::string &filename) {
-
 		std::ifstream ifs(filename.c_str(), std::ifstream::binary);
 		ifs.seekg(0, ifs.end);
 		int length = ifs.tellg();
 		ifs.seekg(0, ifs.beg);
-
 		// allocate memory:
 		char * buffer = new char[length + 1];
 		buffer[length] = 0;
 		// read data as a block:
 		ifs.read(buffer, length);
 		ifs.close();
-
 		//todo
 		std::string tempStr;
 		Syntax_statement stmt;
-		std::cout << static_cast<int> (buffer[length]);
 		for (int i = 0; i < length; ++i) {
 			if (buffer[i] == '_') {
 				tempStr.push_back('_');
@@ -102,7 +98,6 @@ namespace nee {
 			}
 		}
 
-		
 		delete[] buffer;
 	}
 }
