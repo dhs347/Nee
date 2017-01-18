@@ -5,6 +5,9 @@
 #include <vector>
 #include <cctype> //isalpha
 
+
+#include <iostream>
+
 namespace nee {
 
 	class Syntax_statement {
@@ -13,7 +16,7 @@ namespace nee {
 			_statement.push_back(str);
 		}
 	
-	private:
+	//private:
 		std::vector<std::string> _statement;
 	};
 
@@ -29,6 +32,12 @@ namespace nee {
 			++i;
 		}
 		return i;
+	}
+	inline bool ___ISDIGIT(char c) {
+		if (c >= '0' && c <= '9') {
+			return true;
+		}
+		return false;
 	}
 	inline void Tokenizer(const std::string &filename) {
 		std::ifstream ifs(filename.c_str(), std::ifstream::binary);
@@ -48,21 +57,19 @@ namespace nee {
 			if (buffer[i] == '_') {
 				tempStr.push_back('_');
 			}
-			else if(isalpha(static_cast<int>(buffer[i])))
+			else if(isalpha(static_cast<int>(buffer[i]))|| ___ISDIGIT(buffer[i]))//fix
 			{
 				tempStr.push_back(buffer[i]);
 			}
 			else if (buffer[i] == ' ' || buffer[i] == '\t' || buffer[i] == '\n' || buffer[i] == '\r') {
 				if (tempStr.size() != 0) {
 					stmt.addString(tempStr);
-
 				}
 				tempStr.clear();
 			}
 			else if (buffer[i] == '\"') {
 				if (tempStr.size() != 0) {
 					stmt.addString(tempStr);
-
 				}
 				tempStr.clear();
 				int n = stringToken(&buffer[i]);
@@ -97,7 +104,9 @@ namespace nee {
 				
 			}
 		}
-
+		for (size_t i = 0; i < stmt._statement.size(); ++i) {
+			std::cout << stmt._statement[i] << std::endl;
+		}
 		delete[] buffer;
 	}
 }

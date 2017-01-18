@@ -21,6 +21,9 @@
     <ClCompile Include="Number_Operator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="eval.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="nee.h">

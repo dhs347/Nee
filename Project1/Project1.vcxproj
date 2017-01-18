@@ -111,6 +111,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="eval.cpp" />
     <ClCompile Include="nee.cpp" />
     <ClCompile Include="Number_Operator.cpp" />
   </ItemGroup>
