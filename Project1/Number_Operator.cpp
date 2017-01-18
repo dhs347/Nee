@@ -547,6 +547,30 @@ namespace nee {
 	}
 
 
-	// % etc todo
+	// ==
 	
+	bool operator==(const Integer &a, const Integer &b) {
+		if (a.ToString() == b.ToString()) {
+			return true;
+		}
+		return false;
+	}
+	bool operator==(const Integer &a, const Float &b) {
+		if (b.ToString().at(b.ToString().size() - 2) == '.' && b.ToString().at(b.ToString().size() - 1) == '0') {
+			std::string temp = std::string( b.ToString().begin(), b.ToString().end() - 2);
+			if (Integer(temp).ToString() == a.ToString()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	bool operator==(const Float &a, const Integer &b) {
+		return (b == a);
+	}
+	bool operator==(const Float &a, const Float &b) {
+		if (a.ToString() == b.ToString()) {
+			return true;
+		}
+		return false;
+	}
 }

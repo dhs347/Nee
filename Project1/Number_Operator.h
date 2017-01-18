@@ -5,25 +5,21 @@ namespace nee {
 	//ÉùÃ÷
 	Integer operator+(const Integer& a, const Integer& b);
 	Float operator+(const Integer& a, const Float& b);
-
 	Float operator+(const Float& a, const Integer& b);
 	Float operator+(const Float& a, const Float& b);
 
 	Integer operator-(const Integer& a, const Integer& b);
 	Float operator-(const Integer& a, const Float& b);
-
 	Float operator-(const Float& a, const Integer& b);
 	Float operator-(const Float& a, const Float& b);
 
 	Integer operator*(const Integer& a, const Integer& b);
 	Float operator*(const Integer& a, const Float& b);
-
 	Float operator*(const Float& a, const Integer& b);
 	Float operator*(const Float& a, const Float& b);
 
 	Integer operator/(const Integer& a, const Integer& b);
 	Float operator/(const Integer& a, const Float& b);
-
 	Float operator/(const Float& a, const Integer& b);
 	Float operator/(const Float& a, const Float& b);
 
