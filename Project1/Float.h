@@ -80,25 +80,7 @@ namespace nee {
 
 	};
 
-	class Efloat :public Object {
-	public:
-		Efloat()noexcept : efloat_str() {}
-		Efloat(const std::string &_str)noexcept : efloat_str(_str) {}
-		Efloat(const Efloat& r)noexcept : efloat_str(r.efloat_str) {}
-		Efloat& operator=(const Efloat & r)noexcept {
-			this->efloat_str = r.efloat_str;
-			return *this;
-		}
-		std::string ToString() const noexcept{
-			return efloat_str;
-		}
 
-		~Efloat() {}
-	private:
-		std::string efloat_str;
-	
-
-	};
 }
 
 #endif // !__FLOAT_H__

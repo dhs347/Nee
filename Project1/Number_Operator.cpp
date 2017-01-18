@@ -285,9 +285,7 @@ namespace nee {
 
 		return tempFloat;
 	}
-	Efloat operator+(const Integer& a, const Efloat& b) {
-		return Efloat();
-	}
+
 	Float operator+(const Float& a, const Integer& b) {
 		return b + a;
 	}
@@ -308,18 +306,7 @@ namespace nee {
 		tempStr.insert(tempStr.size() - bigtimes, 1, '.');
 		return Float(tempStr);
 	}
-	Efloat operator+(const Float& a, const Efloat& b) {
-		return Efloat();
-	}
-	Efloat operator+(const Efloat& a, const Integer& b) {
-		return Efloat();
-	}
-	Efloat operator+(const Efloat& a, const Float& b) {
-		return Efloat();
-	}
-	Efloat operator+(const Efloat& a, const Efloat& b) {
-		return Efloat();
-	}
+
 	//-
 	Integer operator-(const Integer& a, const Integer& b) {
 		std::string tempa = a.ToString();
@@ -353,9 +340,7 @@ namespace nee {
 
 		return tempFloat;
 	}
-	Efloat operator-(const Integer& a, const Efloat& b) {
-		return Efloat();
-	}
+
 	Float operator-(const Float& a, const Integer& b) {
 		//fix
 		std::string str = (b - a).ToString();
@@ -379,18 +364,7 @@ namespace nee {
 		tempStr.insert(tempStr.size() - bigtimes, 1, '.');
 		return Float(tempStr);
 	}
-	Efloat operator-(const Float& a, const Efloat& b) {
-		return Efloat();
-	}
-	Efloat operator-(const Efloat& a, const Integer& b) {
-		return Efloat();
-	}
-	Efloat operator-(const Efloat& a, const Float& b) {
-		return Efloat();
-	}
-	Efloat operator-(const Efloat& a, const Efloat& b) {
-		return Efloat();
-	}
+
 	//*
 	Integer operator*(const Integer& a, const Integer& b) {
 		std::string tempa = a.ToString();
@@ -425,9 +399,7 @@ namespace nee {
 
 		return tempFloat;
 	}
-	Efloat operator*(const Integer& a, const Efloat& b) {
-		return Efloat();
-	}
+
 	Float operator*(const Float& a, const Integer& b) {
 		return b * a;
 	}
@@ -445,18 +417,7 @@ namespace nee {
 		tempStr.insert(tempStr.size() - 2 * bigtimes, 1, '.');
 		return Float(tempStr);
 	}
-	Efloat operator*(const Float& a, const Efloat& b) {
-		return Efloat();
-	}
-	Efloat operator*(const Efloat& a, const Integer& b) {
-		return Efloat();
-	}
-	Efloat operator*(const Efloat& a, const Float& b) {
-		return Efloat();
-	}
-	Efloat operator*(const Efloat& a, const Efloat& b) {
-		return Efloat();
-	}
+
 	// /
 	Integer operator/(const Integer& a, const Integer& b) {
 
@@ -528,9 +489,7 @@ namespace nee {
 
 		return tempFloat;
 	}
-	Efloat operator/(const Integer& a, const Efloat& b) {
-		return Efloat();
-	}
+
 	Float operator/(const Float& a, const Integer& b) {
 		std::string tempa = a.ToString();
 		std::string tempb = b.ToString();
@@ -586,18 +545,7 @@ namespace nee {
 
 		return Float(Integer(tempa)/ (b * Integer("1" + std::string(times, '0'))));
 	}
-	Efloat operator/(const Float& a, const Efloat& b) {
-		return Efloat();
-	}
-	Efloat operator/(const Efloat& a, const Integer& b) {
-		return Efloat();
-	}
-	Efloat operator/(const Efloat& a, const Float& b) {
-		return Efloat();
-	}
-	Efloat operator/(const Efloat& a, const Efloat& b) {
-		return Efloat();
-	}
+
 
 	// % etc todo
 	
