@@ -265,7 +265,7 @@ namespace nee {
 		}else if (tempa[0] == '-'&&tempb[0] != '-') {	
 			temp = b - Integer(std::string(tempa.begin() + 1, tempa.end()));
 		}else if (tempa[0] != '-'&&tempb[0] == '-') {
-			temp = a - b;
+			temp = a - Integer(std::string(tempb.begin() + 1,tempb.end()));//fix
 		}else if (tempa[0] == '-'&&tempb[0] == '-') {
 			temp = Integer("-" + (Integer(std::string(tempa.begin() + 1, tempa.end())) + Integer(std::string(tempb.begin() + 1, tempb.end())))
 				.ToString());
@@ -673,6 +673,21 @@ namespace nee {
 	}
 	bool operator<=(const Float &a, const Float &b) {
 		return !(a > b);
+	}
+	// %
+
+	Integer operator%(const Integer &a, const Integer &b) {
+		if (b.ToString() == "0") {
+			throw;
+		}
+		Integer temp;
+		if (a.ToString().at(0) == '-' &&b.ToString().at(0) == '-') {
+			temp = a - a / b * b;
+		}
+		else if (a.ToString().at(0) != '-' &&b.ToString().at(0) == '-') {
+			temp = a - b - b;
+		}
+		return temp;
 	}
 
 
