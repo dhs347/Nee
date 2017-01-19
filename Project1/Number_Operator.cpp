@@ -556,11 +556,9 @@ namespace nee {
 		return false;
 	}
 	bool operator==(const Integer &a, const Float &b) {
-		if (b.ToString().at(b.ToString().size() - 2) == '.' && b.ToString().at(b.ToString().size() - 1) == '0') {
-			std::string temp = std::string( b.ToString().begin(), b.ToString().end() - 2);
-			if (Integer(temp).ToString() == a.ToString()) {
-				return true;
-			}
+		Float temp = (a - b);
+		if (temp.ToString() == "0.0") {
+			return true;
 		}
 		return false;
 	}
@@ -573,4 +571,109 @@ namespace nee {
 		}
 		return false;
 	}
+
+	// >
+
+	bool operator>(const Integer &a, const Integer &b) {
+		Integer temp = (a - b);
+		if(temp.ToString() == "0" || temp.ToString()[0] == '-')
+			return false;
+
+		return true;
+	}
+
+	bool operator>(const Integer &a, const Float &b) {
+		Float temp = (a - b);
+		if (temp.ToString() == "0.0" || temp.ToString()[0] == '-')
+			return false;
+
+		return true;
+	}
+
+	bool operator>(const Float &a, const Integer &b) {
+		Float temp = (a - b);
+		if (temp.ToString() == "0.0" || temp.ToString()[0] == '-')
+			return false;
+
+		return true;
+	}
+
+	bool operator>(const Float &a, const Float &b) {
+		Float temp = (a - b);
+		if (temp.ToString() == "0.0" || temp.ToString()[0] == '-')
+			return false;
+		return true;
+	}
+
+	// <
+
+	bool operator<(const Integer &a, const Integer &b) {
+		return !((a == b) || (a > b));
+	}
+
+	bool operator<(const Integer &a, const Float &b) {
+		return !((a == b) || (a > b));
+	}
+
+	bool operator<(const Float &a, const Integer &b) {
+		return !((a == b) || (a > b));
+	}
+
+	bool operator<(const Float &a, const Float &b) {
+		return !((a == b) || (a > b));
+	}
+
+	// != 
+
+
+	bool operator!=(const Integer &a, const Integer &b) {
+		return !(a == b);
+	}
+
+	bool operator!=(const Integer &a, const Float &b) {
+		return !(a == b);
+	}
+
+	bool operator!=(const Float &a, const Integer &b) {
+		return !(a == b);
+	}
+
+	bool operator!=(const Float &a, const Float &b) {
+		return !(a == b);
+	}
+
+	//>=
+
+	bool operator>=(const Integer &a, const Integer &b) {
+		return !(a < b);
+	}
+
+	bool operator>=(const Integer &a, const Float &b) {
+		return !(a < b);
+	}
+
+	bool operator>=(const Float &a, const Integer &b) {
+		return !(a < b);
+	}
+
+	bool operator>=(const Float &a, const Float &b) {
+		return !(a < b);
+	}
+
+	//<=
+
+	bool operator<=(const Integer &a, const Integer &b) {
+		return !(a > b);
+	}
+	bool operator<=(const Integer &a, const Float &b) {
+		return !(a > b);
+	}
+	bool operator<=(const Float &a, const Integer &b) {
+		return !(a > b);
+	}
+	bool operator<=(const Float &a, const Float &b) {
+		return !(a > b);
+	}
+
+
 }

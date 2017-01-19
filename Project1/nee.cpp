@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
 	std::cout << (a / d).ToString() << std::endl;
 	std::cout << (e * f).ToString() << std::endl;
 	std::cout << (g / e).ToString() << std::endl;
-	std::cout << (e / j).ToString() << std::endl;
+	std::cout << (h - h).ToString() << std::endl;
 	std::cout << (g / h).ToString() << std::endl;
 	nee::Tokenizer("C:\\Users\\42937\\Desktop\\x.bf");
 	//std::cout << (a/zero).ToString() << std::endl;

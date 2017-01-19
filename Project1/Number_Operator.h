@@ -23,5 +23,36 @@ namespace nee {
 	Float operator/(const Float& a, const Integer& b);
 	Float operator/(const Float& a, const Float& b);
 
+	bool operator==(const Integer& a, const Integer& b);
+	bool operator==(const Integer& a, const Float& b);
+	bool operator==(const Float& a, const Integer& b);
+	bool operator==(const Float& a, const Float& b);
+
+	bool operator>=(const Integer& a, const Integer& b);
+	bool operator>=(const Integer& a, const Float& b);
+	bool operator>=(const Float& a, const Integer& b);
+	bool operator>=(const Float& a, const Float& b);
+
+	bool operator<=(const Integer& a, const Integer& b);
+	bool operator<=(const Integer& a, const Float& b);
+	bool operator<=(const Float& a, const Integer& b);
+	bool operator<=(const Float& a, const Float& b);
+
+
+	bool operator!=(const Integer& a, const Integer& b);
+	bool operator!=(const Integer& a, const Float& b);
+	bool operator!=(const Float& a, const Integer& b);
+	bool operator!=(const Float& a, const Float& b);
+
+	bool operator>(const Integer& a, const Integer& b);
+	bool operator>(const Integer& a, const Float& b);
+	bool operator>(const Float& a, const Integer& b);
+	bool operator>(const Float& a, const Float& b);
+
+	bool operator<(const Integer& a, const Integer& b);
+	bool operator<(const Integer& a, const Float& b);
+	bool operator<(const Float& a, const Integer& b);
+	bool operator<(const Float& a, const Float& b);
+
 }
 #endif
