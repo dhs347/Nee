@@ -55,6 +55,5 @@ namespace nee {
 	bool operator<(const Float& a, const Float& b);
 
 	Integer operator%(const Integer &a, const Integer &b);
-
 }
 #endif

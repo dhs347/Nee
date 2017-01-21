@@ -23,6 +23,20 @@ namespace nee {
 			}
 				
 		}
+
 		return "";
+	}
+
+	//+-*/%>< == >= <= != and or not -
+	void eval_single() {
+
+	}
+
+	bool is_number() {
+		return true;
+	}
+
+	bool is_float() {
+		return true;
 	}
 }

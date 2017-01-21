@@ -684,9 +684,13 @@ namespace nee {
 		if (a.ToString().at(0) == '-' &&b.ToString().at(0) == '-') {
 			temp = a - a / b * b;
 		}
-		else if (a.ToString().at(0) != '-' &&b.ToString().at(0) == '-') {
-			temp = a - b - b;
+		else if (a.ToString().at(0) != '-' &&b.ToString().at(0) != '-') {
+			temp = a - a / b * b;
 		}
+		else{
+			temp = a - a / b * b + b;
+		}
+
 		return temp;
 	}
 
