@@ -9,7 +9,7 @@ namespace nee {
 	public:
 		String()noexcept : str() , true_str(){}
 		String(const std::string &_str):str(_str), true_str(){
-			if (_str[_str.size() - 1] != '\"') {
+			if (_str.at(_str.size() - 1) != '\"' || _str.at(0) != '\"') {
 				throw;
 			}
 			std::string tempStr = std::string(_str.begin() + 1,_str.end() - 1);
