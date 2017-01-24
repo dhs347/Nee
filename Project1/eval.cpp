@@ -3,6 +3,7 @@
 #include "Number_Operator.h"
 #include <vector>
 #include <string>
+#include <cstring>
 namespace nee {
 	inline bool ___ISDIGIT(char c) {
 		if (c >= '0' && c <= '9') {
@@ -127,6 +128,15 @@ namespace nee {
 		return is_float(str) || is_integer(str);
 	}
 
+	bool is_bool(const std::string &str) {
+		return (str == "true") || (str == "false");
+	}
+
+	bool is_legal_value(const std::string &str) {
+		return is_bool(str) || is_number(str) || is_string(str) || (str == "nil");
+	}
+
+
 	//+-*/%>< == >= <= != and or not -
 	bool _getpoint(const std::string &str) {
 		
@@ -137,8 +147,267 @@ namespace nee {
 		}
 		return false;
 	}
+	std::string arithmetic(const std::string &op, const std::string &left, const std::string &right) {
+		std::string result;
+		if (op == "*") {
+			bool bool_left = _getpoint(left);
+			bool bool_right = _getpoint(right);
+			if (bool_left && bool_right) {
+				result = (Float(left) * Float(right)).ToString();
+			}
+			else if (bool_left && !bool_right) {
+				result = (Float(left) * Integer(right)).ToString();
+			}
+			else if (!bool_left&&bool_right) {
+				result = (Float(right) * Integer(left)).ToString();
+			}
+			else {
+				result = (Integer(left) * Integer(right)).ToString();
+			}
+		}
+		else if (op == "/") {
+			bool bool_left = _getpoint(left);
+			bool bool_right = _getpoint(right);
+			if (bool_left && bool_right) {
+				result = (Float(left) / Float(right)).ToString();
+			}
+			else if (bool_left && !bool_right) {
+				result = (Float(left) / Integer(right)).ToString();
+			}
+			else if (!bool_left&&bool_right) {
+				result = (  Integer(left)/ Float(right)).ToString();
+			}
+			else {
+				result = (Integer(left) / Integer(right)).ToString();
+			}
+		}
+		else if (op == "+") {
+			bool bool_left = _getpoint(left);
+			bool bool_right = _getpoint(right);
+			if (bool_left && bool_right) {
+				result = (Float(left) + Float(right)).ToString();
+			}
+			else if (bool_left && !bool_right) {
+				result = (Float(left) + Integer(right)).ToString();
+			}
+			else if (!bool_left&&bool_right) {
+				result = (Integer(left) + Float(right)).ToString();
+			}
+			else {
+				result = (Integer(left) + Integer(right)).ToString();
+			}
+		}
+		else if (op == "-") {
+			bool bool_left = _getpoint(left);
+			bool bool_right = _getpoint(right);
+			if (bool_left && bool_right) {
+				result = (Float(left) - Float(right)).ToString();
+			}
+			else if (bool_left && !bool_right) {
+				result = (Float(left) - Integer(right)).ToString();
+			}
+			else if (!bool_left&&bool_right) {
+				result = (Integer(left) - Float(right)).ToString();
+			}
+			else {
+				result = (Integer(left) - Integer(right)).ToString();
+			}
+		}
+		else if (op == ">") {
+			bool bool_left = _getpoint(left);
+			bool bool_right = _getpoint(right);
+			if (bool_left && bool_right) {
+				bool cmp = (Float(left) > Float(right));
+				if (cmp) {
+					result = "true";
+				}else result = "false";
+			}
+			else if (bool_left && !bool_right) {
+				bool cmp = (Float(left) > Integer(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else if (!bool_left&&bool_right) {
+				bool cmp = (Integer(left) > Float(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else {
+				bool cmp = (Integer(left) > Integer(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+		}
+		else if (op == ">=") {
+			bool bool_left = _getpoint(left);
+			bool bool_right = _getpoint(right);
+			if (bool_left && bool_right) {
+				bool cmp = (Float(left) >= Float(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else if (bool_left && !bool_right) {
+				bool cmp = (Float(left) >= Integer(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else if (!bool_left&&bool_right) {
+				bool cmp = (Integer(left) >= Float(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else {
+				bool cmp = (Integer(left) >= Integer(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+		}
+		else if (op == "<") {
+			bool bool_left = _getpoint(left);
+			bool bool_right = _getpoint(right);
+			if (bool_left && bool_right) {
+				bool cmp = (Float(left) < Float(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else if (bool_left && !bool_right) {
+				bool cmp = (Float(left) < Integer(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else if (!bool_left&&bool_right) {
+				bool cmp = (Integer(left) < Float(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else {
+				bool cmp = (Integer(left) < Integer(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+		}
+		else if (op == "<=") {
+			bool bool_left = _getpoint(left);
+			bool bool_right = _getpoint(right);
+			if (bool_left && bool_right) {
+				bool cmp = (Float(left) <= Float(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else if (bool_left && !bool_right) {
+				bool cmp = (Float(left) <= Integer(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else if (!bool_left&&bool_right) {
+				bool cmp = (Integer(left) <= Float(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else {
+				bool cmp = (Integer(left) <= Integer(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+		}
+		else if (op == "==") {
+			bool bool_left = _getpoint(left);
+			bool bool_right = _getpoint(right);
+			if (bool_left && bool_right) {
+				bool cmp = (Float(left) == Float(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else if (bool_left && !bool_right) {
+				bool cmp = (Float(left) == Integer(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else if (!bool_left&&bool_right) {
+				bool cmp = (Integer(left) == Float(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else {
+				bool cmp = (Integer(left) == Integer(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+		}
+		else if (op == "!=") {
+			bool bool_left = _getpoint(left);
+			bool bool_right = _getpoint(right);
+			if (bool_left && bool_right) {
+				bool cmp = (Float(left) != Float(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else if (bool_left && !bool_right) {
+				bool cmp = (Float(left) != Integer(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else if (!bool_left&&bool_right) {
+				bool cmp = (Integer(left) != Float(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+			else {
+				bool cmp = (Integer(left) != Integer(right));
+				if (cmp) {
+					result = "true";
+				}
+				else result = "false";
+			}
+		}
+		return result;
+	}
 
-	void eval_single(const Block &block) {
+	std::string eval_single(const Block &block) {
 		std::string eval_string;//todo
 		Block temp = block;
 		temp.insert(temp.begin(), std::string("("));
@@ -152,16 +421,179 @@ namespace nee {
 				i = 0;
 				continue;
 			}
-
-			if ((temp[i] == "*" || temp[i] == "/") && is_number(temp[i - 1]) && is_number(temp[i + 1])) {
-				bool left = _getpoint(temp[i - 1]);
-				bool right = _getpoint(temp[i + 1]);
-				std::string number;
-				//todo
-			}
-
-
 		}
+		for (size_t i = 1; i < temp.size() - 1; ++i) {
+			if ((temp[i] == "*" || temp[i] == "/") && is_number(temp[i - 1]) && is_number(temp[i + 1])) {
+				std::string number = arithmetic(temp[i], temp[i - 1], temp[i + 1]);
+				//todo
+				temp.erase(temp.begin() + i - 1, temp.begin() + i + 2);
+				temp.insert(temp.begin() + i - 1, number);
+				i = 0;
+				continue;
+			}
+		}
+		for (size_t i = 1; i < temp.size() - 1; ++i) {
+			if ((temp[i] == "+" || temp[i] == "-") && is_number(temp[i - 1]) && is_number(temp[i + 1])) {
+				std::string number = arithmetic(temp[i], temp[i - 1], temp[i + 1]);
+				//todo
+				temp.erase(temp.begin() + i - 1, temp.begin() + i + 2);
+				temp.insert(temp.begin() + i - 1, number);
+				i = 0;
+				continue;
+			}
+		}
+		for (size_t i = 1; i < temp.size() - 1; ++i) {
+			if (temp[i] == ">" || temp[i] == ">=" || temp[i] == "<" || temp[i] == "<=") {
+				if (is_string(temp[i - 1]) && is_string(temp[i + 1])) {
+					String left(temp[i - 1]);
+					String right(temp[i + 1]);
+					int res = strcmp(left.ToString().c_str(), right.ToString().c_str());
+					std::string res_str;
+					if (res == 1 && temp[i] == ">") {
+						res_str = "true";
+					}
+					else if (res == 1 && temp[i] == ">=") {
+						res_str = "true";
+					}
+					else if (res == 1 && temp[i] == "<") {
+						res_str = "false";
+					}
+					else if (res == 1 && temp[i] == "<=") {
+						res_str = "false";
+					}
+					//
+					else if (res == 0 && temp[i] == ">") {
+						res_str = "false";
+					}
+					else if (res == 0 && temp[i] == ">=") {
+						res_str = "true";
+					}
+					else if (res == 0 && temp[i] == "<") {
+						res_str = "false";
+					}
+					else if (res == 0 && temp[i] == "<=") {
+						res_str = "true";
+					}
+					//
+					else if (res == -1 && temp[i] == ">") {
+						res_str = "false";
+					}
+					else if (res == -1 && temp[i] == ">=") {
+						res_str = "false";
+					}
+					else if (res == -1 && temp[i] == "<") {
+						res_str = "true";
+					}
+					else if (res == -1 && temp[i] == "<=") {
+						res_str = "true";
+					}
+
+					temp.erase(temp.begin() + i - 1, temp.begin() + i + 2);
+					temp.insert(temp.begin() + i - 1, res_str);
+					i = 0;
+					continue;
+				}
+				else if (is_number(temp[i - 1]) && is_number(temp[i + 1])) {
+					std::string number = arithmetic(temp[i], temp[i - 1], temp[i + 1]);
+					temp.erase(temp.begin() + i - 1, temp.begin() + i + 2);
+					temp.insert(temp.begin() + i - 1, number);
+					i = 0;
+					continue;
+				}
+			}
+		}
+		for (size_t i = 1; i < temp.size() - 1; ++i) {
+			if ((temp[i] == "==" || temp[i] == "!=")) {
+				if (is_string(temp[i - 1]) && is_string(temp[i + 1])) {
+					bool cmp = String(temp[i - 1]).ToString() == String(temp[i + 1]).ToString();
+					std::string res_str;
+					if (cmp && temp[i] == "==") {
+						res_str = "true";
+					}
+					else if (!cmp && temp[i] == "!=") {
+						res_str = "true";
+					}else res_str = "false";
+
+					temp.erase(temp.begin() + i - 1, temp.begin() + i + 2);
+					temp.insert(temp.begin() + i - 1, res_str);
+					i = 0;
+					continue;
+				}
+				else if (is_number(temp[i - 1]) && is_number(temp[i + 1])) {
+					std::string number = arithmetic(temp[i], temp[i - 1], temp[i + 1]);
+					temp.erase(temp.begin() + i - 1, temp.begin() + i + 2);
+					temp.insert(temp.begin() + i - 1, number);
+					i = 0;
+					continue;
+				}
+				else if (is_bool(temp[i - 1]) && is_bool(temp[i + 1])) {
+					std::string res_str;
+					if (temp[i] == "==" && temp[i - 1] == temp [i + 1]) {
+						res_str = "true";
+					}
+					else if (temp[i] == "==" && temp[i - 1] != temp[i + 1]) {
+						res_str = "false";
+					}
+					else if (temp[i] == "!=" && temp[i - 1] == temp[i + 1]) {
+						res_str = "false";
+					}
+					else if (temp[i] == "!=" && temp[i - 1] != temp[i + 1]) {
+						res_str = "true";
+					}
+					temp.erase(temp.begin() + i - 1, temp.begin() + i + 2);
+					temp.insert(temp.begin() + i - 1, res_str);
+					i = 0;
+					continue;
+
+				}
+				else if (temp[i - 1] == "nil" && temp[i + 1] == "nil") {
+					std::string res_str;
+					if (temp[i] == "==") {
+						res_str = "true";
+					}
+					else res_str = "false";
+					temp.erase(temp.begin() + i - 1, temp.begin() + i + 2);
+					temp.insert(temp.begin() + i - 1, res_str);
+					i = 0;
+					continue;
+				}
+
+			}
+		}
+
+		for (size_t i = 1; i < temp.size() - 1; ++i) {
+			if (temp[i] == "and" && is_legal_value(temp[i - 1]) && is_legal_value(temp[i + 1])) {
+				std::string res_str;
+				if (temp[i - 1] == "nil" || temp[i - 1] == "false") {
+					res_str = temp[i - 1];
+				}
+				else res_str = temp[i + 1];
+				temp.erase(temp.begin() + i - 1, temp.begin() + i + 2);
+				temp.insert(temp.begin() + i - 1, res_str);
+				i = 0;
+				continue;
+
+			}
+		}
+		for (size_t i = 1; i < temp.size() - 1; ++i) {
+			if (temp[i] == "or" && is_legal_value(temp[i - 1]) && is_legal_value(temp[i + 1])) {
+				std::string res_str;
+				if (temp[i - 1] == "nil" || temp[i - 1] == "false") {
+					res_str = temp[i + 1];
+				}
+				else res_str = temp[i - 1];
+				temp.erase(temp.begin() + i - 1, temp.begin() + i + 2);
+				temp.insert(temp.begin() + i - 1, res_str);
+				i = 0;
+				continue;
+
+			}
+		}
+
+		if (temp.size() != 3) {
+			throw;
+		}
+		return temp[1];
 	}
 
 

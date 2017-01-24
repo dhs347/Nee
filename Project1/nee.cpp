@@ -7,6 +7,9 @@
 namespace nee {
 	std::string getRemainder(std::string num1, std::string num2);
 	void Tokenizer(const std::string &filename);
+
+	using Block = std::vector<std::string>;
+	std::string eval_single(const Block &block);
 }
 int main(int argc, char *argv[]){
 
@@ -44,6 +47,8 @@ int main(int argc, char *argv[]){
 	std::cout << (d % c).ToString() << std::endl;
 	nee::Tokenizer("C:\\Users\\42937\\Desktop\\x.bf");
 	//std::cout << (a/zero).ToString() << std::endl;
+	std::vector<std::string> temp{"1","+","-","1.222223"};
+	std::cout << nee::eval_single(temp) << std::endl;
 	while (true)
 	{
 
