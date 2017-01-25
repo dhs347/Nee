@@ -53,24 +53,19 @@ namespace nee {
 		//todo
 		std::string tempStr;
 		Syntax_statement stmt;
-		bool number_point_flag = false;
+
 		for (int i = 0; i < length; ++i) {
 			if (buffer[i] == '_') {
 				tempStr.push_back('_');
-				number_point_flag = false;
 			}
 			else if(isalpha(static_cast<int>(buffer[i]))|| ___ISDIGIT(buffer[i]))//fix
 			{
 				tempStr.push_back(buffer[i]);
-				if (___ISDIGIT(buffer[i])) {
-					number_point_flag = true;
-				}else number_point_flag = false;
 			}
 			else if (buffer[i] == ' ' || buffer[i] == '\t' || buffer[i] == '\n' || buffer[i] == '\r') {
 				if (tempStr.size() != 0) {
 					stmt.addString(tempStr);
 				}
-				number_point_flag = false;
 				tempStr.clear();
 			}
 			else if (buffer[i] == '\"') {
@@ -81,14 +76,8 @@ namespace nee {
 				int n = stringToken(&buffer[i]);
 				stmt.addString(std::string(&buffer[i], n + 1));
 				i += n;
-				number_point_flag = false;
 			}
 			else {//·ûºÅ
-				//judge .
-				if (buffer[i] == '.'&&number_point_flag) {
-					tempStr.push_back('.');
-					continue;
-				}
 
 
 				if (tempStr.size() != 0) {
@@ -115,7 +104,7 @@ namespace nee {
 				else {
 					stmt.addString(std::string(&buffer[i],1));
 				}
-				number_point_flag = false;//fix
+
 			}
 		}
 		for (size_t i = 0; i < stmt._statement.size(); ++i) {
