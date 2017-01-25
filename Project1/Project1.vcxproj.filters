@@ -21,9 +21,6 @@
     <ClCompile Include="Number_Operator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="eval.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="nee.h">
@@ -54,6 +51,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Tokenizer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TokentoBlock.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Eval.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

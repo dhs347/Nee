@@ -3,10 +3,10 @@
 
 #include <iostream>
 #include "Tokenizer.h"
+#include "Eval.h"
 //debug
 namespace nee {
 	std::string getRemainder(std::string num1, std::string num2);
-	void Tokenizer(const std::string &filename);
 
 	using Block = std::vector<std::string>;
 	std::string eval_single(const Block &block);

@@ -6,7 +6,6 @@
 #include <cctype> //isalpha
 
 
-#include <iostream>
 
 namespace nee {
 
@@ -15,8 +14,12 @@ namespace nee {
 		void addString(const std::string &str) {
 			_statement.push_back(str);
 		}
+
+		std::vector<std::string> get_vector() {
+			return  _statement;
+		}
 	
-	//private:
+	private:
 		std::vector<std::string> _statement;
 	};
 
@@ -39,7 +42,7 @@ namespace nee {
 		}
 		return false;
 	}
-	inline void Tokenizer(const std::string &filename) {
+	inline std::vector<std::string> Tokenizer(const std::string &filename) {
 		std::ifstream ifs(filename.c_str(), std::ifstream::binary);
 		ifs.seekg(0, ifs.end);
 		int length = ifs.tellg();
@@ -79,7 +82,6 @@ namespace nee {
 			}
 			else {//·ûºÅ
 
-
 				if (tempStr.size() != 0) {
 					stmt.addString(tempStr);
 
@@ -107,10 +109,9 @@ namespace nee {
 
 			}
 		}
-		for (size_t i = 0; i < stmt._statement.size(); ++i) {
-			std::cout << stmt._statement[i] << std::endl;
-		}
 		delete[] buffer;
+
+		return stmt.get_vector();
 	}
 }
 

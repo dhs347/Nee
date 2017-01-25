@@ -111,11 +111,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="eval.cpp" />
     <ClCompile Include="nee.cpp" />
     <ClCompile Include="Number_Operator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Eval.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="Integer.h" />
     <ClInclude Include="nee.h" />
@@ -126,6 +126,7 @@
     <ClInclude Include="Parser.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="Tokenizer.h" />
+    <ClInclude Include="TokentoBlock.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,3 +1,5 @@
+
+#ifndef _EVAL_H_
 #include "String.h"
 #include "Number.h"
 #include "Number_Operator.h"
@@ -5,21 +7,17 @@
 #include <string>
 #include <cstring>
 namespace nee {
-	inline bool ___ISDIGIT(char c) {
+	inline bool ____ISDIGIT(char c) {
 		if (c >= '0' && c <= '9') {
 			return true;
 		}
 		return false;
 	}
 
-	using Block = std::vector<std::string>;
-
-
-
-	std::string eval(const Block &block) {
+	inline std::string eval(const std::vector<std::string> &block) {
 		int depth = 0;
 		int max_depth = 0;
-		for (size_t i = 0;i < block.size(); ++i) {
+		for (size_t i = 0; i < block.size(); ++i) {
 			if (depth < 0) {
 				throw;
 			}
@@ -33,13 +31,13 @@ namespace nee {
 			else if (block[i] == ")") {
 				--depth;
 			}
-				
+
 		}
 
 		return "";
 	}
 
-	bool is_operator(const std::string &str) {
+	inline bool is_operator(const std::string &str) {
 		if (str == "+" ||
 			str == "-" ||
 			str == "*" ||
@@ -59,7 +57,7 @@ namespace nee {
 		return false;
 	}
 
-	bool is_float(const std::string &str) {
+	inline bool is_float(const std::string &str) {
 		if (str.size() == 1)return false;//
 
 		size_t point_pos = 0;
@@ -71,17 +69,17 @@ namespace nee {
 		}
 
 		for (size_t i = 0; i < str.size(); ++i) {
-			if (!___ISDIGIT(str[i]) && i != point_pos) {
+			if (!____ISDIGIT(str[i]) && i != point_pos) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	bool is_integer(const std::string &str) {
+	inline bool is_integer(const std::string &str) {
 
 		for (size_t i = 0; i < str.size(); ++i) {
-			if (!___ISDIGIT(str[i])) {
+			if (!____ISDIGIT(str[i])) {
 				return false;
 			}
 		}
@@ -89,14 +87,14 @@ namespace nee {
 	}
 
 
-	bool is_number(const std::string &str) {
+	inline bool is_number(const std::string &str) {
 		if (str.at(0) == '-') {
 			return is_float(std::string(str.begin() + 1, str.end())) || is_integer(std::string(str.begin() + 1, str.end()));
 		}
 		return is_float(str) || is_integer(str);
 	}
 
-	bool is_string(const std::string &str) {
+	inline bool is_string(const std::string &str) {
 		if (str.size() < 2) {
 			return false;
 		}
@@ -124,22 +122,22 @@ namespace nee {
 		return true;
 	}
 
-	bool is_positive_number(const std::string &str) {
+	inline bool is_positive_number(const std::string &str) {
 		return is_float(str) || is_integer(str);
 	}
 
-	bool is_bool(const std::string &str) {
+	inline bool is_bool(const std::string &str) {
 		return (str == "true") || (str == "false");
 	}
 
-	bool is_legal_value(const std::string &str) {
+	inline bool is_legal_value(const std::string &str) {
 		return is_bool(str) || is_number(str) || is_string(str) || (str == "nil");
 	}
 
 
 	//+-*/%>< == >= <= != and or not -
-	bool _getpoint(const std::string &str) {
-		
+	inline bool _getpoint(const std::string &str) {
+
 		for (size_t i = 0; i < str.size(); ++i) {
 			if (str[i] == '.') {
 				return true;
@@ -147,7 +145,7 @@ namespace nee {
 		}
 		return false;
 	}
-	std::string arithmetic(const std::string &op, const std::string &left, const std::string &right) {
+	inline std::string arithmetic(const std::string &op, const std::string &left, const std::string &right) {
 		std::string result;
 		if (op == "*") {
 			bool bool_left = _getpoint(left);
@@ -175,7 +173,7 @@ namespace nee {
 				result = (Float(left) / Integer(right)).ToString();
 			}
 			else if (!bool_left&&bool_right) {
-				result = (  Integer(left)/ Float(right)).ToString();
+				result = (Integer(left) / Float(right)).ToString();
 			}
 			else {
 				result = (Integer(left) / Integer(right)).ToString();
@@ -220,7 +218,8 @@ namespace nee {
 				bool cmp = (Float(left) > Float(right));
 				if (cmp) {
 					result = "true";
-				}else result = "false";
+				}
+				else result = "false";
 			}
 			else if (bool_left && !bool_right) {
 				bool cmp = (Float(left) > Integer(right));
@@ -406,15 +405,14 @@ namespace nee {
 		}
 		return result;
 	}
-
-	std::string eval_single(const Block &block) {
+	inline std::string eval_single(const std::vector<std::string> &block) {
 		std::string eval_string;//todo
-		Block temp = block;
+		std::vector<std::string> temp = block;
 		temp.insert(temp.begin(), std::string("("));
 		temp.push_back(")");
-		Block tempblock;
-		for (size_t i = 1;i < temp.size() - 1;++i) {
-			if (temp[i] == "-" && is_positive_number(temp[i+1]) && !is_number(temp[i - 1])) {
+		std::vector<std::string> tempblock;
+		for (size_t i = 1; i < temp.size() - 1; ++i) {
+			if (temp[i] == "-" && is_positive_number(temp[i + 1]) && !is_number(temp[i - 1])) {
 				std::string number = "-" + temp[i + 1];
 				temp.erase(temp.begin() + i, temp.begin() + i + 2);
 				temp.insert(temp.begin() + i, number);
@@ -512,7 +510,8 @@ namespace nee {
 					}
 					else if (!cmp && temp[i] == "!=") {
 						res_str = "true";
-					}else res_str = "false";
+					}
+					else res_str = "false";
 
 					temp.erase(temp.begin() + i - 1, temp.begin() + i + 2);
 					temp.insert(temp.begin() + i - 1, res_str);
@@ -528,7 +527,7 @@ namespace nee {
 				}
 				else if (is_bool(temp[i - 1]) && is_bool(temp[i + 1])) {
 					std::string res_str;
-					if (temp[i] == "==" && temp[i - 1] == temp [i + 1]) {
+					if (temp[i] == "==" && temp[i - 1] == temp[i + 1]) {
 						res_str = "true";
 					}
 					else if (temp[i] == "==" && temp[i - 1] != temp[i + 1]) {
@@ -596,6 +595,6 @@ namespace nee {
 		return temp[1];
 	}
 
-
-
 }
+#endif // !_EVAL_H_
+
