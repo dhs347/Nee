@@ -20,9 +20,9 @@ namespace nee {
 						tempStr.at(i + 1) == 'f' || tempStr.at(i + 1) == 'n' || tempStr.at(i + 1) == 'r'  || tempStr.at(i + 1) == 't') {
 						++i;
 					}
-					else if (isalpha(static_cast<int>(tempStr.at(i + 1))) 
-						  && isalpha(static_cast<int>(tempStr.at(i + 2)))
-						  && isalpha(static_cast<int>(tempStr.at(i + 3)))) {
+					else if (isdigit(static_cast<int>(tempStr.at(i + 1))) 
+						  && isdigit(static_cast<int>(tempStr.at(i + 2)))
+						  && isdigit(static_cast<int>(tempStr.at(i + 3)))) {
 						i += 3;
 					}
 					else {

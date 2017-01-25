@@ -58,7 +58,7 @@ namespace nee {
 	}
 
 	inline bool is_float(const std::string &str) {
-		if (str.size() == 1)return false;//
+		if (str.size() <= 2)return false;//
 
 		size_t point_pos = 0;
 		for (size_t i = 0; i < str.size(); ++i) {
@@ -77,6 +77,9 @@ namespace nee {
 	}
 
 	inline bool is_integer(const std::string &str) {
+		if (str.size() == 0) {
+			return false;
+		}
 
 		for (size_t i = 0; i < str.size(); ++i) {
 			if (!____ISDIGIT(str[i])) {
@@ -109,9 +112,9 @@ namespace nee {
 					tempStr.at(i + 1) == 'f' || tempStr.at(i + 1) == 'n' || tempStr.at(i + 1) == 'r' || tempStr.at(i + 1) == 't') {
 					++i;
 				}
-				else if (isalpha(static_cast<int>(tempStr.at(i + 1)))
-					&& isalpha(static_cast<int>(tempStr.at(i + 2)))
-					&& isalpha(static_cast<int>(tempStr.at(i + 3)))) {
+				else if (____ISDIGIT(tempStr.at(i + 1))
+					&& ____ISDIGIT(tempStr.at(i + 2))
+					&& ____ISDIGIT(tempStr.at(i + 3))) {
 					i += 3;
 				}
 				else {
@@ -410,7 +413,9 @@ namespace nee {
 		std::vector<std::string> temp = block;
 		temp.insert(temp.begin(), std::string("("));
 		temp.push_back(")");
-		std::vector<std::string> tempblock;
+		
+
+
 		for (size_t i = 1; i < temp.size() - 1; ++i) {
 			if (temp[i] == "-" && is_positive_number(temp[i + 1]) && !is_number(temp[i - 1])) {
 				std::string number = "-" + temp[i + 1];
@@ -589,8 +594,21 @@ namespace nee {
 			}
 		}
 
-		if (temp.size() != 3) {
+		if (temp.size() > 3) {
 			throw;
+		}
+		if (temp.size() == 2) {
+			return "";
+		}
+
+		if (!is_legal_value(temp[1])) {
+			throw 2;
+		}
+		else {
+			//todo
+			if (is_string(temp[1])) {
+				temp[1] = String(temp[1]).ToString();
+			}
 		}
 		return temp[1];
 	}

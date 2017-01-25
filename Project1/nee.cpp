@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
 	std::cout << (d % c).ToString() << std::endl;
 	nee::Tokenizer("C:\\Users\\42937\\Desktop\\x.bf");
 	//std::cout << (a/zero).ToString() << std::endl;
-	std::vector<std::string> temp{"1","+","-","1.222223"};
+	std::vector<std::string> temp{"\"zzz1234\\112156\""};
 	std::cout << nee::eval_single(temp) << std::endl;
 	while (true)
 	{
