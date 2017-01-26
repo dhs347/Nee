@@ -3,11 +3,8 @@
 #include "Tokenizer.h"
 #include "Eval.h"
 namespace nee {
-	class Block {
 
-	};
-
-	void TokentoBlock(const std::vector<std::string> &token) {
+	std::vector<std::vector<std::string>> TokentoBlock(const std::vector<std::string> &token) {
 		std::vector<std::string> temptoken = token;
 		std::vector<std::vector<std::string>> block;
 		temptoken.insert(temptoken.begin(), "");
@@ -23,11 +20,15 @@ namespace nee {
 		}
 		temptoken.erase(temptoken.begin(), temptoken.begin() + 1);
 		temptoken.pop_back();
-
-		for (;;) {
+		auto beginit = temptoken.begin();
+		for (auto it = temptoken.begin();it != temptoken.end(); ++it) {
 			//todo
+			if (*it == ";") {
+				block.push_back(std::vector<std::string>(beginit, it));
+				beginit = it + 1;
+			}
 		}
-
+		return block;
 	}
 }
 #endif // !_TOKENTOBLOCK_H_

@@ -115,6 +115,7 @@
     <ClCompile Include="Number_Operator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Block.h" />
     <ClInclude Include="Eval.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="Integer.h" />

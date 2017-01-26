@@ -5,12 +5,7 @@
 #include "Tokenizer.h"
 #include "Eval.h"
 //debug
-namespace nee {
-	std::string getRemainder(std::string num1, std::string num2);
 
-	using Block = std::vector<std::string>;
-	std::string eval_single(const Block &block);
-}
 int main(int argc, char *argv[]){
 
 	nee::Integer a("2");
@@ -47,7 +42,7 @@ int main(int argc, char *argv[]){
 	std::cout << (d % c).ToString() << std::endl;
 	nee::Tokenizer("C:\\Users\\42937\\Desktop\\x.bf");
 	//std::cout << (a/zero).ToString() << std::endl;
-	std::vector<std::string> temp{"\"zzz1234\\112156\""};
+	std::vector<std::string> temp{"123","/","123"};
 	std::cout << nee::eval_single(temp) << std::endl;
 	while (true)
 	{

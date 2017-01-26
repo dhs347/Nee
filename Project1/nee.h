@@ -3,5 +3,9 @@
 
 namespace nee {
 
+	void make_interpreter() {
+
+	}
+
 }
 #endif // !__NEE_H__
