@@ -20,30 +20,30 @@ int main(int argc, char *argv[]){
 	nee::Integer i("444444342342");
 	nee::Integer j("31");
 
-	std::cout << (a + a).ToString() << std::endl;
-	std::cout << (a + b).ToString() << std::endl;
-	std::cout << (a + c).ToString() << std::endl;
-	std::cout << (a + d).ToString() << std::endl;
-	std::cout << (a - a).ToString() << std::endl;
-	std::cout << (a - b).ToString() << std::endl;
-	std::cout << (a - c).ToString() << std::endl;
-	std::cout << (a - d).ToString() << std::endl;
-	std::cout << (a * a).ToString() << std::endl;
-	std::cout << (a * b).ToString() << std::endl;
-	std::cout << (a * c).ToString() << std::endl;
-	std::cout << (a * d).ToString() << std::endl;
-	std::cout << (a / a).ToString() << std::endl;
-	std::cout << (a / b).ToString() << std::endl;
-	std::cout << (a / c).ToString() << std::endl;
-	std::cout << (a / d).ToString() << std::endl;
-	std::cout << (e * f).ToString() << std::endl;
-	std::cout << (g / e).ToString() << std::endl;
-	std::cout << (h - h).ToString() << std::endl;
-	std::cout << (d % c).ToString() << std::endl;
-	nee::Tokenizer("C:\\Users\\42937\\Desktop\\x.bf");
+	//std::cout << (a + a).ToString() << std::endl;
+	//std::cout << (a + b).ToString() << std::endl;
+	//std::cout << (a + c).ToString() << std::endl;
+	//std::cout << (a + d).ToString() << std::endl;
+	//std::cout << (a - a).ToString() << std::endl;
+	//std::cout << (a - b).ToString() << std::endl;
+	//std::cout << (a - c).ToString() << std::endl;
+	//std::cout << (a - d).ToString() << std::endl;
+	//std::cout << (a * a).ToString() << std::endl;
+	//std::cout << (a * b).ToString() << std::endl;
+	//std::cout << (a * c).ToString() << std::endl;
+	//std::cout << (a * d).ToString() << std::endl;
+	//std::cout << (a / a).ToString() << std::endl;
+	//std::cout << (a / b).ToString() << std::endl;
+	//std::cout << (a / c).ToString() << std::endl;
+	//std::cout << (a / d).ToString() << std::endl;
+	//std::cout << (e * f).ToString() << std::endl;
+	//std::cout << (g / e).ToString() << std::endl;
+	//std::cout << (h - h).ToString() << std::endl;
+	//std::cout << (d % c).ToString() << std::endl;
+	//nee::Tokenizer("C:\\Users\\42937\\Desktop\\x.bf");
 	//std::cout << (a/zero).ToString() << std::endl;
-	std::vector<std::string> temp{"123","/","123"};
-	std::cout << nee::eval_single(temp) << std::endl;
+	std::vector<std::string> temp{"(","123","/","(","123",")","+","-","0122.11",")"};
+	std::cout << nee::eval(temp) << std::endl;
 	while (true)
 	{
 

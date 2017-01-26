@@ -6,6 +6,9 @@
 #include <vector>
 #include <string>
 #include <cstring>
+
+#include <iostream>
+
 namespace nee {
 	inline bool ____ISDIGIT(char c) {
 		if (c >= '0' && c <= '9') {
@@ -14,28 +17,7 @@ namespace nee {
 		return false;
 	}
 
-	inline std::string eval(const std::vector<std::string> &block) {
-		int depth = 0;
-		int max_depth = 0;
-		for (size_t i = 0; i < block.size(); ++i) {
-			if (depth < 0) {
-				throw;
-			}
 
-			if (block[i] == "(") {
-				++depth;
-				if (depth > max_depth) {
-					max_depth = depth;
-				}
-			}
-			else if (block[i] == ")") {
-				--depth;
-			}
-
-		}
-
-		return "";
-	}
 
 	inline bool is_operator(const std::string &str) {
 		if (str == "+" ||
@@ -409,6 +391,10 @@ namespace nee {
 		return result;
 	}
 	inline std::string eval_single(const std::vector<std::string> &block) {
+		if (block.size() == 0) {
+			throw;
+		}
+
 		std::string eval_string;//todo
 		std::vector<std::string> temp = block;
 		temp.insert(temp.begin(), std::string("("));
@@ -597,9 +583,6 @@ namespace nee {
 		if (temp.size() > 3) {
 			throw;
 		}
-		if (temp.size() == 2) {
-			return "";
-		}
 
 		if (!is_legal_value(temp[1])) {
 			throw 2;
@@ -611,6 +594,93 @@ namespace nee {
 			}
 		}
 		return temp[1];
+	}
+
+
+	inline std::string eval(const std::vector<std::string> &block) {
+		int depth = 0;
+		int max_depth = 0;
+		for (size_t i = 0; i < block.size(); ++i) {
+			if (depth < 0) {
+				throw;
+			}
+			if (block[i] == "(") {
+				++depth;
+				if (depth > max_depth) {
+					max_depth = depth;
+				}
+			}
+			else if (block[i] == ")") {
+				--depth;
+			}
+
+		}
+		if (depth != 0) {
+			throw;
+		}
+
+		if (max_depth == 0) {
+			return eval_single(block);
+		}
+
+		std::vector<std::string> tempblock = block;
+		while (max_depth != 0)
+		{
+
+			bool reset_flag = false;
+
+
+			for (size_t i = 0; i < tempblock.size(); ++i) {
+
+				if (reset_flag) {
+					i = 0;
+					reset_flag = false;
+				}
+
+				if (tempblock[i] == "(") {
+					++depth;
+				}
+				else if (block[i] == ")") {
+					--depth;
+				}
+
+
+				if (depth == max_depth) {
+					size_t _number;
+					for (size_t j = i + 1; j < tempblock.size(); ++j) { //...
+						if (tempblock[j] == ")") {
+							_number = j - i - 1;
+							break;
+						}
+					}
+					//std::cout << "maxdepth:"<<max_depth << std::endl;
+					//std::cout <<"number:"<< _number << std::endl;
+					std::vector<std::string> single_block = std::vector<std::string>(tempblock.begin() + i + 1 , tempblock.begin() + i+ 1 + _number);
+					//for (auto &x : single_block) {
+					//	std::cout << x << std::endl;
+					//}
+					
+					std::string value = eval_single(single_block);
+					//std::cout << value << std::endl;
+					tempblock.erase(tempblock.begin() + i, tempblock.begin() + i + _number + 2);
+					tempblock.insert(tempblock.begin() + i, value);
+					//for (auto &x : tempblock) {
+					//	std::cout << x << std::endl;
+					//}
+					//fix i must == -1 but it is size_t
+					reset_flag = true;
+					i = 0;
+					//fix bug
+					depth = 0;
+					continue;
+				}
+			}
+			--max_depth;
+		}
+
+
+	
+		return tempblock.at(0);
 	}
 
 }

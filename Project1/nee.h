@@ -3,7 +3,7 @@
 
 namespace nee {
 
-	void make_interpreter() {
+	inline void make_interpreter() {
 
 	}
 

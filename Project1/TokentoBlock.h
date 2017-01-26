@@ -4,7 +4,7 @@
 #include "Eval.h"
 namespace nee {
 
-	std::vector<std::vector<std::string>> TokentoBlock(const std::vector<std::string> &token) {
+	inline std::vector<std::vector<std::string>> TokentoBlock(const std::vector<std::string> &token) {
 		std::vector<std::string> temptoken = token;
 		std::vector<std::vector<std::string>> block;
 		temptoken.insert(temptoken.begin(), "");
