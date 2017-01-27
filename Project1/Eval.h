@@ -669,7 +669,6 @@ namespace nee {
 					//}
 					//fix i must == -1 but it is size_t
 					reset_flag = true;
-					i = 0;
 					//fix bug
 					depth = 0;
 					continue;

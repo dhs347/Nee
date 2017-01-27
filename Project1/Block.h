@@ -5,10 +5,11 @@
 #include <string>
 #include <unordered_map>
 #include <cctype>
+#include "Eval.h"
 namespace nee {
 	enum nee_type
 	{
-		NEE_STRING,NEE_FLOAT,NEE_INTEGER,NEE_BOOL,NEE_NIL,//maybe add
+		NEE_STRING,NEE_FLOAT,NEE_INTEGER,NEE_BOOL,NEE_NIL,NEE_FUNCTION//maybe add
 	};
 	class variable {
 	public:
@@ -86,6 +87,7 @@ namespace nee {
 		}
 
 		if (_block[1] == "=") {
+			std::string value = eval()
 			//do eval
 		}
 		else if (_block[1] == "(") {

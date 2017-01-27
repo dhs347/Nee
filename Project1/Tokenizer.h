@@ -109,6 +109,11 @@ namespace nee {
 
 			}
 		}
+		//auto ve = stmt.get_vector();
+		//for (size_t i = 0; i < ve.size(); ++i) {
+		//	std::cout << ve[i] << std::endl;
+		//}
+
 		delete[] buffer;
 
 		return stmt.get_vector();
