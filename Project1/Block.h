@@ -4,8 +4,10 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <cctype>
 #include "Eval.h"
+#include "Function.h"
 namespace nee {
 	enum nee_type
 	{
@@ -126,6 +128,35 @@ namespace nee {
 		}
 		else if (_block[1] == "(") {
 			//do function
+
+			if (_block[_block.size() - 1] != ")") {
+				throw;
+			}
+			std::vector<std::string> tempblock = std::vector<std::string>(_block.begin() + 1, _block.end() - 1);
+			//translate
+			for (size_t i = 0; i < tempblock.size(); ++i) {
+				if (is_variable(tempblock[i])) {
+					auto _v = _vt.find(tempblock[i]);
+					tempblock[i] = _v.value();
+				}
+			}
+			//todo hefa
+			std::vector<std::string> parameter;
+
+			std::vector<std::pair<std::string, nee_type>> arr_parameter;
+			for (size_t i = 0; i < tempblock.size(); ++i) {
+				if (tempblock[i] == ",") {
+					std::string value = eval(parameter);
+					arr_parameter.push_back(std::pair<std::string, nee_type>(value, get_type(value)));
+					parameter.clear();
+				}
+				else {
+					parameter.push_back(tempblock[i]);
+				}
+			}
+
+			//do function
+
 		}
 		else {
 			//eval

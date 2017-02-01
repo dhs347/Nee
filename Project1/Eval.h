@@ -1,5 +1,7 @@
 
 #ifndef _EVAL_H_
+#define _EVAL_H_
+
 #include "String.h"
 #include "Number.h"
 #include "Number_Operator.h"
@@ -585,7 +587,7 @@ namespace nee {
 		}
 
 		if (!is_legal_value(temp[1])) {
-			throw 2;
+			throw;
 		}
 		else {
 			//todo
