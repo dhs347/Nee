@@ -82,7 +82,7 @@ namespace nee {
 		}
 		if (str == "if" || str == "elif" || str == "else" || str == "then" ||
 			str == "begin" || str == "end" || str == "while" || str == "loop" ||
-			str == "and" || str == "or" || str == "not" ) {
+			str == "and" || str == "or" || str == "not" || str == "function") {
 			return false;
 		}
 
@@ -97,6 +97,15 @@ namespace nee {
 		return true;
 	}
 	inline void process_if(variable_table& _vt,const  std::vector<std::string> &_block) {
+		if (_block.size() == 1) {
+			throw;
+		}
+		size_t left_brace_pos = 0;
+		for (size_t i = 1; i < _block.size(); ++i) {
+			if (_block.at(i) == "{") {
+				//
+			}
+		}
 
 	}
 	inline void process_loop(variable_table& _vt, const  std::vector<std::string> &_block){
@@ -108,9 +117,10 @@ namespace nee {
 
 	inline void process_variable(variable_table& _vt, const  std::vector<std::string> &_block) {
 		if (_block.size() == 1) {
-			//todo
 			auto _v = _vt.find(_block[0]);
-			_v.value();
+			//std::cout << _v.value();
+			//fix bug 
+			return;
 		}
 
 		if (_block[1] == "=") {
@@ -126,7 +136,7 @@ namespace nee {
 
 			std::string value = eval(tempblock);
 			//do eval
-			std::cout << value<< " " << get_type(value);
+			//std::cout << value<< " " << get_type(value);
 
 			_vt.insert(_block[0],get_type(value), value);
 		}
@@ -144,7 +154,7 @@ namespace nee {
 					tempblock[i] = _v.value();
 				}
 			}
-			//todo hefa
+			//do hefa
 			std::vector<std::string> parameter;
 
 			std::vector<std::pair<std::string, nee_type>> arr_parameter;
@@ -159,7 +169,7 @@ namespace nee {
 				}
 			}
 
-			//do function
+			//todo function
 
 		}
 		else {
