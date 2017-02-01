@@ -45,6 +45,10 @@ namespace nee {
 			return true_str;
 		}
 
+		std::string type_name()  const noexcept {
+			return std::string("string");
+		}
+
 		~String() {}
 	private:
 		void _translate(const std::string &str) {

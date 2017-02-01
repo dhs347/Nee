@@ -25,6 +25,10 @@ namespace nee {
 			return integer_str;
 		}
 
+		std::string type_name()  const noexcept {
+			return std::string("integer");
+		}
+
 		~Integer() {}
 	private:
 		std::string integer_str;

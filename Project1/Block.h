@@ -51,6 +51,26 @@ namespace nee {
 		std::unordered_map<std::string, variable> _variable;
 	};
 
+	inline nee_type get_type(const std::string &str) {
+		nee_type _type;
+		if (is_string(str)) {
+			_type = NEE_STRING;
+		}
+		if (is_number(str)) {
+			if (_getpoint(str)) {
+				_type = NEE_FLOAT;
+			}
+			else _type = NEE_INTEGER;
+		}
+		if (is_bool(str)) {
+			_type = NEE_BOOL;
+		}
+		if (str == "nil") {
+			_type = NEE_NIL;
+		}
+		return _type;
+	}
+
 	inline bool is_variable(const std::string &str) {
 		if (str.size() < 1) {
 			return false;
@@ -84,17 +104,43 @@ namespace nee {
 	void process_variable(variable_table& _vt, const  std::vector<std::string> &_block) {
 		if (_block.size() == 1) {
 			//todo
+			auto _v = _vt.find(_block[0]);
+			_v.value();
 		}
 
 		if (_block[1] == "=") {
-			std::string value = eval()
+			std::vector<std::string> tempblock = std::vector<std::string>(_block.begin()+2,_block.end());
+			//translate
+			for (size_t i = 0; i < tempblock.size();++i) {
+				if (is_variable(tempblock[i])) {
+					auto _v = _vt.find(tempblock[i]);
+
+					tempblock[i] = _v.value();
+				}
+			}
+
+			std::string value = eval(tempblock);
 			//do eval
+
+			_vt.insert(_block[0],get_type(value), value);
 		}
 		else if (_block[1] == "(") {
 			//do function
 		}
 		else {
-			throw;
+			//eval
+
+			std::vector<std::string> tempblock = _block;
+			//translate
+			for (size_t i = 0; i < tempblock.size(); ++i) {
+				if (is_variable(tempblock[i])) {
+					auto _v = _vt.find(tempblock[i]);
+
+					tempblock[i] = _v.value();
+				}
+			}
+
+			eval(tempblock);
 		}
 
 	}
@@ -116,7 +162,7 @@ namespace nee {
 
 			}
 			else if (is_variable(block[i][0])) {
-
+				process_variable(_v_table, block[i]);
 			}
 			else {
 				throw;

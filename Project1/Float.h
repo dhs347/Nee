@@ -43,6 +43,10 @@ namespace nee {
 			return float_str;
 		}
 
+		std::string type_name()  const noexcept {
+			return std::string("float");
+		}
+
 		~Float() {}
 	private:
 		std::string float_str;

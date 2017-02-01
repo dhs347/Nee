@@ -676,8 +676,6 @@ namespace nee {
 			}
 			--max_depth;
 		}
-
-
 	
 		return tempblock.at(0);
 	}

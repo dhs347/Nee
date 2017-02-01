@@ -40,14 +40,14 @@ int main(int argc, char *argv[]){
 	//std::cout << (g / e).ToString() << std::endl;
 	//std::cout << (h - h).ToString() << std::endl;
 	//std::cout << (d % c).ToString() << std::endl;
-	auto x = nee::TokentoBlock(nee::Tokenizer("C:\\Users\\42937\\Desktop\\x.bf"));
+	//auto x = nee::TokentoBlock(nee::Tokenizer("C:\\Users\\42937\\Desktop\\x.bf"));
 
-	for (auto &i:x) {
-		for (auto &j:i) {
-			std::cout << j << std::endl;
-		}
-		std::cout << std::endl;
-	}
+	//for (auto &i:x) {
+	//	for (auto &j:i) {
+	//		std::cout << j << std::endl;
+	//	}
+	//	std::cout << std::endl;
+	//}
 	//std::cout << (a/zero).ToString() << std::endl;
 	std::vector<std::string> temp{"(","123","/","(","123","+","2",")","+","-","0122.11",")"};
 	std::cout << nee::eval(temp) << std::endl;
