@@ -4,6 +4,7 @@
 
 #include "TokentoBlock.h"
 #include "Block.h"
+#include "Eval.h"
 
 
 #include <iostream>
@@ -52,7 +53,10 @@ int main(int argc, char *argv[]){
 	//	std::cout << std::endl;
 	//}
 	//std::cout << (a/zero).ToString() << std::endl;
-	std::vector<std::string> temp{"(","123","/","(","123","+","2",")","+","-","0122.11",")"};
+	std::vector<std::string> temp{"a","=","(","123","/","(","123","+","2",")","+","-","0122.11",")"};
+	std::vector<std::vector<std::string>> x; x.push_back(temp);
+	nee::variable_table vt;
+	nee::process_block(x);
 	std::cout << nee::eval(temp) << std::endl;
 	while (true)
 	{

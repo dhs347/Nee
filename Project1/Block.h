@@ -8,6 +8,9 @@
 #include <cctype>
 #include "Eval.h"
 #include "Function.h"
+
+#include <iostream>
+
 namespace nee {
 	enum nee_type
 	{
@@ -93,17 +96,17 @@ namespace nee {
 		}
 		return true;
 	}
-	void process_if(variable_table& _vt,const  std::vector<std::string> &_block) {
+	inline void process_if(variable_table& _vt,const  std::vector<std::string> &_block) {
 
 	}
-	void process_loop(variable_table& _vt, const  std::vector<std::string> &_block){
+	inline void process_loop(variable_table& _vt, const  std::vector<std::string> &_block){
 
 	}
-	void process_while(variable_table& _vt, const  std::vector<std::string> &_block) {
+	inline void process_while(variable_table& _vt, const  std::vector<std::string> &_block) {
 
 	}
 
-	void process_variable(variable_table& _vt, const  std::vector<std::string> &_block) {
+	inline void process_variable(variable_table& _vt, const  std::vector<std::string> &_block) {
 		if (_block.size() == 1) {
 			//todo
 			auto _v = _vt.find(_block[0]);
@@ -123,6 +126,7 @@ namespace nee {
 
 			std::string value = eval(tempblock);
 			//do eval
+			std::cout << value<< " " << get_type(value);
 
 			_vt.insert(_block[0],get_type(value), value);
 		}
@@ -193,6 +197,7 @@ namespace nee {
 
 			}
 			else if (is_variable(block[i][0])) {
+				//std::cout << "var";
 				process_variable(_v_table, block[i]);
 			}
 			else {

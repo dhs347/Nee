@@ -678,6 +678,11 @@ namespace nee {
 			}
 			--max_depth;
 		}
+
+		//fix bug
+		if (tempblock.size() > 1) {
+			throw;
+		}
 	
 		return tempblock.at(0);
 	}
