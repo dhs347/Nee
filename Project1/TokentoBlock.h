@@ -34,8 +34,7 @@ namespace nee {
 						++depth;
 					}
 					if (*it == "end") {
-						//add end
-						singal_block.push_back(*it);
+						//
 						//
 						--depth;
 						if (depth == 0) {

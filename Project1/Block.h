@@ -82,7 +82,7 @@ namespace nee {
 		}
 		if (str == "if" || str == "elif" || str == "else" || str == "then" ||
 			str == "begin" || str == "end" || str == "while" || str == "loop" ||
-			str == "and" || str == "or" || str == "not" || str == "function") {
+			str == "and" || str == "or" || str == "not" || str == "function" || str == "do") {
 			return false;
 		}
 
@@ -100,13 +100,11 @@ namespace nee {
 		if (_block.size() == 1) {
 			throw;
 		}
-		size_t left_brace_pos = 0;
+		//todo
+		std::string should_find_string = "then";
 		for (size_t i = 1; i < _block.size(); ++i) {
-			if (_block.at(i) == "{") {
-				//
-			}
+			
 		}
-
 	}
 	inline void process_loop(variable_table& _vt, const  std::vector<std::string> &_block){
 
