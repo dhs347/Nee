@@ -549,6 +549,19 @@ namespace nee {
 					i = 0;
 					continue;
 				}
+				//todo different type
+				else if (is_legal_value(temp[i - 1]) && is_legal_value(temp[i + 1])) {
+					//todo
+					std::string res_str;
+					if (temp[i] == "==") {
+						res_str = "false";
+					}
+					else res_str = "true";
+					temp.erase(temp.begin() + i - 1, temp.begin() + i + 2);
+					temp.insert(temp.begin() + i - 1, res_str);
+					i = 0;
+					continue;
+				}
 
 			}
 		}
@@ -582,6 +595,7 @@ namespace nee {
 			}
 		}
 
+		//todo
 		if (temp.size() > 3) {
 			throw;
 		}

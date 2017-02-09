@@ -101,10 +101,117 @@ namespace nee {
 			throw;
 		}
 		//todo
-		std::string should_find_string = "then";
-		for (size_t i = 1; i < _block.size(); ++i) {
-			
+		bool have_else = false;
+		std::vector<std::string> _condition;
+		std::vector<std::vector<std::string>> blocks;
+		int depth = 1,_depth = 0;size_t pos = 0;
+		std::vector<std::string> temp;
+
+
+		for (size_t i = 0; i < _block.size(); ++i) {
+			if (_block[i] == "loop" || _block[i] == "if" || _block[i] == "while") {
+				++_depth;
+			}
+			if (_block[i] == "end") {
+				--_depth;
+			}
 		}
+
+		if (_depth != 0) {
+			throw;
+		}
+
+		for (size_t i = 1; i < _block.size(); ++i) {
+
+			if (_block[i] != "then") {
+				temp.push_back(_block[i]);
+			}
+			else { pos = i + 1; break; }
+		}
+
+		//translate
+		for (size_t i = 0; i < temp.size(); ++i) {
+			if (is_variable(temp[i])) {
+				auto _v = _vt.find(temp[i]);
+				temp[i] = _v.value();
+			}
+		}
+		//add if condition
+		_condition.push_back(eval(temp));
+		temp.clear();
+
+
+		for (size_t i = pos;i < _block.size();++i) {
+			
+			if (_block[i] == "loop" || _block[i] == "if" || _block[i] == "while") {
+				++depth;
+			}
+			if (_block[i] == "end") {
+				--depth;
+			}
+
+			if (depth == 1 && (_block[i] == "elif" || _block[i] == "else")) {
+				blocks.push_back(temp);
+				temp.clear();
+				if (_block[i] == "elif") {
+					for (size_t j = i + 1; j < _block.size(); ++j) {
+						if (_block[j] != "then") {
+							temp.push_back(_block[j]);
+						}
+						else { pos = j; break; }
+					}
+
+					//translate
+					for (size_t k = 0; k < temp.size(); ++k) {
+						if (is_variable(temp[k])) {
+							auto _v = _vt.find(temp[k]);
+							temp[k] = _v.value();
+						}
+					}
+
+
+					
+					_condition.push_back(eval(temp));
+					temp.clear();
+					i = pos;
+
+					//need add blocks
+
+					continue;
+				}
+				else {
+					//else
+				
+					blocks.push_back(std::vector<std::string>(_block.begin() + i + 1, _block.end() - 1));
+					break;
+					
+				}
+			}
+			else {
+				if (i != _block.size() - 1) {
+					temp.push_back(_block[i]);
+				}
+			}
+
+		}
+		
+
+		if (temp.size() != 0) {
+			blocks.push_back(temp);
+			temp.clear();
+		}
+
+		for (auto x : _condition) {
+			std::cout << x << std::endl;
+		}
+		for (auto x : blocks) {
+			for (auto y : x) {
+				std::cout << y << std::endl;
+			}std::cout <<  std::endl;
+		}
+
+
+
 	}
 	inline void process_loop(variable_table& _vt, const  std::vector<std::string> &_block){
 
@@ -188,15 +295,14 @@ namespace nee {
 
 	}
 
-	inline void process_block(std::vector<std::vector<std::string>> &block) {
-		variable_table _v_table;
+	inline void process_block(variable_table& _v_table,std::vector<std::vector<std::string>> &block) {
 		for (size_t i = 0;i < block.size(); ++i) {
 			if (block[i].size() == 0) {
 				continue;
 			}
 
 			if (block[i][0] == "if") {
-
+				process_if(_v_table, block[i]);
 			}
 			else if (block[i][0] == "loop") {
 
