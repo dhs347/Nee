@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
 	//	std::cout << std::endl;
 	//}
 	//std::cout << (a/zero).ToString() << std::endl;
-	std::vector<std::string> temp{"a","(","z",",","3","+","1.2" ,")"};
+	std::vector<std::string> temp{"print","(","z",",","3","+","1.2" ,")"};
 	std::vector<std::vector<std::string>> x; x.push_back(temp);
 	nee::variable_table vt;
 	std::vector<std::vector<std::string> > temp_b;

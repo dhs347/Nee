@@ -3,59 +3,17 @@
 #define _BLOCK_H_
 #include <vector>
 #include <string>
-#include <unordered_map>
 #include <utility>
 #include <cctype>
 #include "Eval.h"
 #include "TokentoBlock.h"
+#include "Library.h"
 
 
 #include <iostream>
 
 namespace nee {
-	enum nee_type
-	{
-		NEE_STRING,NEE_FLOAT,NEE_INTEGER,NEE_BOOL,NEE_NIL,NEE_FUNCTION//maybe add
-	};
-	class variable {
-	public:
-		void set_variable(nee_type type,const std::string&str) {
-			_type = type;
-			_value = str;
-		}
-		std::string value() {
-			return _value;
-		}
-	private:
-		nee_type _type;
-		std::string _value;
-	};
-	class variable_table{
-	public:
-		void insert(const std::string &name,nee_type _type,const std::string &value) {
-			auto it = _variable.find(name);
-			variable _v;
-			_v.set_variable(_type, value);
-			if (it == _variable.end()) {
-				_variable.insert({name,_v});
-			}
-			else { _variable[name] = _v; }
 
-		}
-		variable find(const std::string &name) {
-			auto it = _variable.find(name);
-			variable _v;
-			if (it == _variable.end()) {
-				_v.set_variable(NEE_NIL, "nil");
-			}
-			else {
-				_v = it->second;
-			}
-			return _v;
-		}
-	private:
-		std::unordered_map<std::string, variable> _variable;
-	};
 
 	inline nee_type get_type(const std::string &str) {
 		nee_type _type;
@@ -301,7 +259,7 @@ namespace nee {
 			//do hefa
 			std::vector<std::string> parameter;
 
-			std::vector<std::pair<std::string, nee_type>> arr_parameter;
+			nee_State arr_parameter;
 			for (size_t i = 0; i < tempblock.size(); ++i) {
 				if (tempblock[i] == ",") {
 				/*	std::cout << parameter[0] << std::endl;*/
@@ -314,18 +272,21 @@ namespace nee {
 					parameter.push_back(tempblock[i]);
 				}
 			}
-
+			//fix
 			if (parameter.size() != 0) {
 				std::string value = eval(parameter);
 				arr_parameter.push_back(std::pair<std::string, nee_type>(value, get_type(value)));
 				parameter.clear();
 			}
 
-			//todo function
-			//std::cout << "function:" << std::endl;
-			for (size_t i = 0;i < arr_parameter.size(); ++i) {
-				std::cout << arr_parameter[i].first << " " << arr_parameter[i].second << std::endl;
-			}
+			////todo function
+			////std::cout << "function:" << std::endl;
+			//for (size_t i = 0;i < arr_parameter.size(); ++i) {
+			//	std::cout << arr_parameter[i].first << " " << arr_parameter[i].second << std::endl;
+			//}
+
+			//doxxxx
+			do_function(_block[0].c_str(),arr_parameter);
 
 		}
 		else {

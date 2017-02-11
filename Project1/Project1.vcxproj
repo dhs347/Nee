@@ -119,6 +119,7 @@
     <ClInclude Include="Eval.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="Integer.h" />
+    <ClInclude Include="Library.h" />
     <ClInclude Include="nee.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="Number_Operator.h" />
@@ -128,6 +129,7 @@
     <ClInclude Include="String.h" />
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="TokentoBlock.h" />
+    <ClInclude Include="Type.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
