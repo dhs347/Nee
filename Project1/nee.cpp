@@ -53,11 +53,12 @@ int main(int argc, char *argv[]){
 	//	std::cout << std::endl;
 	//}
 	//std::cout << (a/zero).ToString() << std::endl;
-	std::vector<std::string> temp{"if","a","==","nil","then","a","=","5","elif","nil","==","2","then","a","=","6","else","a","=","7","end"};
+	std::vector<std::string> temp{"a","(","z",",","3","+","1.2" ,")"};
 	std::vector<std::vector<std::string>> x; x.push_back(temp);
 	nee::variable_table vt;
-
-	nee::process_if(vt,temp);
+	std::vector<std::vector<std::string> > temp_b;
+	temp_b.push_back(temp);
+	nee::process_block(vt,temp_b);
 	//std::cout << nee::eval(temp) << std::endl;
 	while (true)
 	{

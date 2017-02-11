@@ -7,7 +7,8 @@
 #include <utility>
 #include <cctype>
 #include "Eval.h"
-#include "Function.h"
+#include "TokentoBlock.h"
+
 
 #include <iostream>
 
@@ -96,12 +97,14 @@ namespace nee {
 		}
 		return true;
 	}
+
+	inline void process_block(variable_table& _v_table, std::vector<std::vector<std::string>> &block);
+
 	inline void process_if(variable_table& _vt,const  std::vector<std::string> &_block) {
 		if (_block.size() == 1) {
 			throw;
 		}
 		//todo
-		bool have_else = false;
 		std::vector<std::string> _condition;
 		std::vector<std::vector<std::string>> blocks;
 		int depth = 1,_depth = 0;size_t pos = 0;
@@ -201,6 +204,8 @@ namespace nee {
 			temp.clear();
 		}
 
+
+
 		for (auto x : _condition) {
 			std::cout << x << std::endl;
 		}
@@ -210,7 +215,39 @@ namespace nee {
 			}std::cout <<  std::endl;
 		}
 
+		size_t _pos_ = 0;
+		for (size_t i = 0;i < _condition.size(); ++i) {
+			if (_condition[i] != "false" || _condition[i] != "nil") {
+				_pos_ = i + 1;
+				break;
+			}
+			
+		}
 
+		if (_pos_ == 0) {
+			if (_condition.size() < blocks.size()) {
+				//do else block
+				//make blocks
+
+				auto temp_block = TokentoBlock(blocks.at(blocks.size() - 1));
+				process_block(_vt,temp_block);
+	
+			}
+			else {
+				//Don't do anything 
+			}
+
+		}
+		else {
+			//do _pos_ block
+			//make blocks
+			//for{
+			//    process_block(_vt, blocks);
+			//}
+
+			auto temp_block = TokentoBlock(blocks.at(_pos_ - 1));
+			process_block(_vt, temp_block);
+		}
 
 	}
 	inline void process_loop(variable_table& _vt, const  std::vector<std::string> &_block){
@@ -251,7 +288,9 @@ namespace nee {
 			if (_block[_block.size() - 1] != ")") {
 				throw;
 			}
-			std::vector<std::string> tempblock = std::vector<std::string>(_block.begin() + 1, _block.end() - 1);
+			//fix bug
+			std::vector<std::string> tempblock = std::vector<std::string>(_block.begin() + 2, _block.end() - 1);
+
 			//translate
 			for (size_t i = 0; i < tempblock.size(); ++i) {
 				if (is_variable(tempblock[i])) {
@@ -265,7 +304,9 @@ namespace nee {
 			std::vector<std::pair<std::string, nee_type>> arr_parameter;
 			for (size_t i = 0; i < tempblock.size(); ++i) {
 				if (tempblock[i] == ",") {
+				/*	std::cout << parameter[0] << std::endl;*/
 					std::string value = eval(parameter);
+					
 					arr_parameter.push_back(std::pair<std::string, nee_type>(value, get_type(value)));
 					parameter.clear();
 				}
@@ -274,7 +315,17 @@ namespace nee {
 				}
 			}
 
+			if (parameter.size() != 0) {
+				std::string value = eval(parameter);
+				arr_parameter.push_back(std::pair<std::string, nee_type>(value, get_type(value)));
+				parameter.clear();
+			}
+
 			//todo function
+			//std::cout << "function:" << std::endl;
+			for (size_t i = 0;i < arr_parameter.size(); ++i) {
+				std::cout << arr_parameter[i].first << " " << arr_parameter[i].second << std::endl;
+			}
 
 		}
 		else {
@@ -297,6 +348,9 @@ namespace nee {
 
 	inline void process_block(variable_table& _v_table,std::vector<std::vector<std::string>> &block) {
 		for (size_t i = 0;i < block.size(); ++i) {
+
+			std::cout << "block:" << std::endl;
+
 			if (block[i].size() == 0) {
 				continue;
 			}
