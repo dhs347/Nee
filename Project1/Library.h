@@ -47,11 +47,11 @@ namespace nee {
 	
 	}
 
-	inline nee_Value do_function(const char *functionname,nee_State &s) {
+	inline nee_Value do_function(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &x ,const char *functionname,nee_State &s) {
 		nee_Value temp;
-		std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > x;
 
-		init_function(x);
+		if(x.empty())
+			init_function(x);
 		auto it = x.find(std::string(functionname));
 
 		if (it == x.end()) {

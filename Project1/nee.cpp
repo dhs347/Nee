@@ -51,7 +51,8 @@ int main(int argc, char *argv[]){
 	nee::variable_table vt;
 	std::vector<std::vector<std::string> > temp_b;
 	temp_b.push_back(temp);
-	nee::process_block(vt,temp_b);
+	std::unordered_map< std::string, std::function<nee::nee_Value(nee::nee_State &)> > fun;
+	nee::process_block(fun,vt,temp_b);
 	//std::cout << nee::eval(temp) << std::endl;
 	while (true)
 	{
