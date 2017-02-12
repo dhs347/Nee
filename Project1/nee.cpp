@@ -46,13 +46,20 @@ int main(int argc, char *argv[]){
 	//	std::cout << std::endl;
 	//}
 	//std::cout << (a/zero).ToString() << std::endl;
-	std::vector<std::string> temp{"exit","(",")"};
-	std::vector<std::vector<std::string>> x; x.push_back(temp);
+	auto x = nee::TokentoBlock(nee::Tokenizer("C:\\Users\\42937\\Desktop\\x.nee"));
+	//for (auto &i:x) {
+	//	for (auto &j:i) {
+	//		std::cout << j << std::endl;
+	//	}
+	//	std::cout << std::endl;
+	//}
 	nee::variable_table vt;
-	std::vector<std::vector<std::string> > temp_b;
-	temp_b.push_back(temp);
+
 	std::unordered_map< std::string, std::function<nee::nee_Value(nee::nee_State &)> > fun;
-	nee::process_block(fun,vt,temp_b);
+	//
+	nee::init_function(fun);
+	//
+	nee::process_block(fun,vt,x);
 	//std::cout << nee::eval(temp) << std::endl;
 	while (true)
 	{

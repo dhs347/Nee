@@ -37,7 +37,12 @@ namespace nee {
 		return "nil";
 	}
 
-
+	inline bool is_function(const std::string&str) {
+		if (str == "exit" || str == "print") {
+			return true;
+		}
+		return false;
+	}
 
 
 	inline void init_function(std::unordered_map<std::string, std::function<nee_Value(nee_State &)> > & fun) {

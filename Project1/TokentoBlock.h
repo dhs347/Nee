@@ -43,8 +43,9 @@ namespace nee {
 						}
 					}
 				}
-
-				block.push_back(singal_block);
+				//dont need add
+				//std::cout << "haha2\n";
+				//block.push_back(singal_block);
 				if (it == temptoken.end()) {
 					return block;
 				}
@@ -52,9 +53,14 @@ namespace nee {
 			}
 
 			if (*it == ";") {
+				//std::cout << "haha\n";
 				block.push_back(std::vector<std::string>(beginit, it));
 				beginit = it + 1;
 			}
+		}
+
+		if (beginit != temptoken.end()) {
+			throw;
 		}
 		return block;
 	}

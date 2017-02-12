@@ -42,7 +42,7 @@ namespace nee {
 		}
 		if (str == "if" || str == "elif" || str == "else" || str == "then" ||
 			str == "begin" || str == "end" || str == "while" || str == "loop" || str == "break" ||
-			str == "and" || str == "or" || str == "not" || str == "function" || str == "do") {
+			str == "and" || str == "or" || str == "not" || str == "function" || str == "do"|| is_function(str)) {
 			return false;
 		}
 
@@ -227,7 +227,15 @@ namespace nee {
 			throw;
 		}
 
-		if (!is_integer(_block[1])) {
+		//translate 
+		std::string times;
+		if (is_variable(_block[1])) {
+			auto _v = _vt.find(_block[1]);
+			times = _v.value();
+		}
+		
+
+		if (!is_integer(times)) {
 			throw;
 		}
 		if (_block[2] != "do") {
@@ -236,19 +244,18 @@ namespace nee {
 		if (_block.at(_block.size() - 1) != "end") {
 			throw;
 		}
-		Integer _int = _block[1];
+		Integer _int = times;
+		
 		std::vector<std::string> temp(_block.begin() + 3, _block.end() - 1);
 		auto loopblock = TokentoBlock(temp);
 		while (true) {
+			//std::cout << "loop:times"<< _int.ToString() << std::endl;;
 			process_block(fun,_vt,loopblock);
 			_int = _int - Integer("1");
 			if (_int.ToString() == "0") {
 				break;
 			}
 		}
-
-
-
 
 	}
 	inline void process_while(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &fun, variable_table& _vt, const  std::vector<std::string> &_block) {
@@ -284,70 +291,7 @@ namespace nee {
 			}
 
 			_vt.insert(_block[0],_t, value);
-		}
-		else if (_block[1] == "(") {
-			//do function
-
-			if (_block[_block.size() - 1] != ")") {
-				throw;
-			}
-			//fix bug
-			std::vector<std::string> tempblock = std::vector<std::string>(_block.begin() + 2, _block.end() - 1);
-
-			//translate
-			for (size_t i = 0; i < tempblock.size(); ++i) {
-				if (is_variable(tempblock[i])) {
-					auto _v = _vt.find(tempblock[i]);
-					tempblock[i] = _v.value();
-				}
-			}
-			//do hefa
-			std::vector<std::string> parameter;
-
-			nee_State arr_parameter;
-			for (size_t i = 0; i < tempblock.size(); ++i) {
-				if (tempblock[i] == ",") {
-				/*	std::cout << parameter[0] << std::endl;*/
-					std::string value = eval(parameter);
-
-					nee_type _t = get_type(value);
-
-					if (_t == NEE_STRING) {
-						value = String(value).ToString();
-					}
-					
-					arr_parameter.push_back(std::pair<std::string, nee_type>(value, _t));
-					parameter.clear();
-				}
-				else {
-					parameter.push_back(tempblock[i]);
-				}
-			}
-			//fix
-			if (parameter.size() != 0) {
-				std::string value = eval(parameter);
-
-				nee_type _t = get_type(value);
-
-				if (_t == NEE_STRING) {
-					value = String(value).ToString();
-				}
-
-				arr_parameter.push_back(std::pair<std::string, nee_type>(value, _t));
-				parameter.clear();
-			}
-
-			////todo function
-			////std::cout << "function:" << std::endl;
-			//for (size_t i = 0;i < arr_parameter.size(); ++i) {
-			//	std::cout << arr_parameter[i].first << " " << arr_parameter[i].second << std::endl;
-			//}
-
-			//doxxxx
-			do_function(fun,_block[0].c_str(),arr_parameter);
-
-		}
-		else {
+		}else {
 			//eval
 
 			std::vector<std::string> tempblock = _block;
@@ -364,6 +308,69 @@ namespace nee {
 		}
 
 	}
+	inline void process_function(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &fun, variable_table& _vt, const  std::vector<std::string> &_block) {
+
+					//do function
+
+					if (_block[_block.size() - 1] != ")") {
+						throw;
+					}
+					//fix bug
+					std::vector<std::string> tempblock = std::vector<std::string>(_block.begin() + 2, _block.end() - 1);
+
+					//translate
+					for (size_t i = 0; i < tempblock.size(); ++i) {
+						if (is_variable(tempblock[i])) {
+							auto _v = _vt.find(tempblock[i]);
+							tempblock[i] = _v.value();
+						}
+					}
+					//do hefa
+					std::vector<std::string> parameter;
+
+					nee_State arr_parameter;
+					for (size_t i = 0; i < tempblock.size(); ++i) {
+						if (tempblock[i] == ",") {
+							/*	std::cout << parameter[0] << std::endl;*/
+							std::string value = eval(parameter);
+
+							nee_type _t = get_type(value);
+
+							if (_t == NEE_STRING) {
+								value = String(value).ToString();
+							}
+
+							arr_parameter.push_back(std::pair<std::string, nee_type>(value, _t));
+							parameter.clear();
+						}
+						else {
+							parameter.push_back(tempblock[i]);
+						}
+					}
+					//fix
+					if (parameter.size() != 0) {
+						std::string value = eval(parameter);
+
+						nee_type _t = get_type(value);
+
+						if (_t == NEE_STRING) {
+							value = String(value).ToString();
+						}
+
+						arr_parameter.push_back(std::pair<std::string, nee_type>(value, _t));
+						parameter.clear();
+					}
+
+					////todo function
+					////std::cout << "function:" << std::endl;
+					//for (size_t i = 0;i < arr_parameter.size(); ++i) {
+					//	std::cout << arr_parameter[i].first << " " << arr_parameter[i].second << std::endl;
+					//}
+
+					//doxxxx
+					do_function(fun, _block[0].c_str(), arr_parameter);
+
+	}
 
 	inline void process_block(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &fun, variable_table& _v_table,std::vector<std::vector<std::string>> &block) {
 		for (size_t i = 0;i < block.size(); ++i) {
@@ -378,7 +385,7 @@ namespace nee {
 				process_if(fun,_v_table, block[i]);
 			}
 			else if (block[i][0] == "loop") {
-
+				process_loop(fun, _v_table, block[i]);
 			}
 			else if (block[i][0] == "while") {
 
@@ -386,6 +393,8 @@ namespace nee {
 			else if (is_variable(block[i][0])) {
 				//std::cout << "var";
 				process_variable(fun,_v_table, block[i]);
+			}else if(is_function(block[i][0])){
+				process_function(fun, _v_table, block[i]);
 			}
 			else {
 				throw;
