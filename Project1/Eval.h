@@ -102,10 +102,12 @@ namespace nee {
 					i += 3;
 				}
 				else {
+					//std::cout << "err";
 					return false;
 				}
 			}
 		}
+		//std::cout << "err2";
 		return true;
 	}
 
@@ -604,9 +606,9 @@ namespace nee {
 			throw;
 		}
 		else {
-			//todo
+			//todo fix
 			if (is_string(temp[1])) {
-				temp[1] = String(temp[1]).ToString();
+				temp[1] = String(temp[1]).ToNeeString();
 			}
 		}
 		return temp[1];

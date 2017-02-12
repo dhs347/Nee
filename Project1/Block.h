@@ -17,6 +17,7 @@ namespace nee {
 
 	inline nee_type get_type(const std::string &str) {
 		nee_type _type;
+		//std::cout << str;
 		if (is_string(str)) {
 			_type = NEE_STRING;
 		}
@@ -237,8 +238,13 @@ namespace nee {
 			std::string value = eval(tempblock);
 			//do eval
 			//std::cout << value<< " " << get_type(value);
+			nee_type _t = get_type(value);
 
-			_vt.insert(_block[0],get_type(value), value);
+			if (_t == NEE_STRING) {
+				value = String(value).ToString();
+			}
+
+			_vt.insert(_block[0],_t, value);
 		}
 		else if (_block[1] == "(") {
 			//do function
@@ -264,8 +270,14 @@ namespace nee {
 				if (tempblock[i] == ",") {
 				/*	std::cout << parameter[0] << std::endl;*/
 					std::string value = eval(parameter);
+
+					nee_type _t = get_type(value);
+
+					if (_t == NEE_STRING) {
+						value = String(value).ToString();
+					}
 					
-					arr_parameter.push_back(std::pair<std::string, nee_type>(value, get_type(value)));
+					arr_parameter.push_back(std::pair<std::string, nee_type>(value, _t));
 					parameter.clear();
 				}
 				else {
@@ -275,7 +287,14 @@ namespace nee {
 			//fix
 			if (parameter.size() != 0) {
 				std::string value = eval(parameter);
-				arr_parameter.push_back(std::pair<std::string, nee_type>(value, get_type(value)));
+
+				nee_type _t = get_type(value);
+
+				if (_t == NEE_STRING) {
+					value = String(value).ToString();
+				}
+
+				arr_parameter.push_back(std::pair<std::string, nee_type>(value, _t));
 				parameter.clear();
 			}
 

@@ -41,6 +41,10 @@ namespace nee {
 			this->true_str = r.true_str;
 			return *this;
 		}
+		std::string ToNeeString() const noexcept {
+			return str;
+		}
+
 		std::string ToString() const noexcept {
 			return true_str;
 		}
@@ -51,49 +55,49 @@ namespace nee {
 
 		~String() {}
 	private:
-		void _translate(const std::string &str) {
-			for (size_t i = 0;i < str.size(); ++i) {
-				if (str.at(i) == '\\') {
-					if (str.at(i + 1) == '"') {
+		void _translate(const std::string &_str) {
+			for (size_t i = 0;i < _str.size(); ++i) {
+				if (_str.at(i) == '\\') {
+					if (_str.at(i + 1) == '"') {
 						true_str.push_back('"');
 						++i;
 					}
-					else if(str.at(i + 1) == '\\')
+					else if(_str.at(i + 1) == '\\')
 					{
 						true_str.push_back('\\');
 						++i;
 					}
-					else if (str.at(i + 1) == 'b')
+					else if (_str.at(i + 1) == 'b')
 					{
 						true_str.push_back('\b');
 						++i;
 					}
-					else if (str.at(i + 1) == 'f')
+					else if (_str.at(i + 1) == 'f')
 					{
 						true_str.push_back('\f');
 						++i;
 					}
-					else if (str.at(i + 1) == 'n')
+					else if (_str.at(i + 1) == 'n')
 					{
 						true_str.push_back('\n');
 						++i;
 					}
-					else if (str.at(i + 1) == 'r')
+					else if (_str.at(i + 1) == 'r')
 					{
 						true_str.push_back('\r');
 						++i;
 					}
-					else if (str.at(i + 1) == 't')
+					else if (_str.at(i + 1) == 't')
 					{
 						true_str.push_back('\t');
 						++i;
 					}
 					else {
-						true_str.push_back(static_cast<char>(100 * (str.at(i + 1) - '0') + 10 * (str.at(i + 2) - '0') + (str.at(i + 3) - '0')));
+						true_str.push_back(static_cast<char>(100 * (_str.at(i + 1) - '0') + 10 * (_str.at(i + 2) - '0') + (_str.at(i + 3) - '0')));
 						i += 3;
 					}
 				}
-				else true_str.push_back(str.at(i));
+				else true_str.push_back(_str.at(i));
 			}
 		}
 
