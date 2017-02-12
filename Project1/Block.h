@@ -41,7 +41,7 @@ namespace nee {
 			return false;
 		}
 		if (str == "if" || str == "elif" || str == "else" || str == "then" ||
-			str == "begin" || str == "end" || str == "while" || str == "loop" ||
+			str == "begin" || str == "end" || str == "while" || str == "loop" || str == "break" ||
 			str == "and" || str == "or" || str == "not" || str == "function" || str == "do") {
 			return false;
 		}
@@ -210,6 +210,45 @@ namespace nee {
 
 	}
 	inline void process_loop(variable_table& _vt, const  std::vector<std::string> &_block){
+		int _depth = 0;
+		for (size_t i = 0; i < _block.size(); ++i) {
+			if (_block[i] == "loop" || _block[i] == "if" || _block[i] == "while") {
+				++_depth;
+			}
+			if (_block[i] == "end") {
+				--_depth;
+			}
+		}
+		if (_block.size() < 4) {
+			throw;
+		}
+
+		if (_depth != 0) {
+			throw;
+		}
+
+		if (!is_integer(_block[1])) {
+			throw;
+		}
+		if (_block[2] != "do") {
+			throw;
+		}
+		if (_block.at(_block.size() - 1) != "end") {
+			throw;
+		}
+		Integer _int = _block[1];
+		std::vector<std::string> temp(_block.begin() + 3, _block.end() - 1);
+		auto loopblock = TokentoBlock(temp);
+		while (true) {
+			process_block(_vt,loopblock);
+			_int = _int - Integer("1");
+			if (_int.ToString() == "0") {
+				break;
+			}
+		}
+
+
+
 
 	}
 	inline void process_while(variable_table& _vt, const  std::vector<std::string> &_block) {
@@ -329,7 +368,7 @@ namespace nee {
 	inline void process_block(variable_table& _v_table,std::vector<std::vector<std::string>> &block) {
 		for (size_t i = 0;i < block.size(); ++i) {
 
-			std::cout << "block:" << std::endl;
+			//std::cout << "block:" << std::endl;
 
 			if (block[i].size() == 0) {
 				continue;

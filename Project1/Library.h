@@ -6,6 +6,8 @@
 #include "Type.h"
 
 
+
+
 namespace nee {
 
 	
@@ -37,9 +39,12 @@ namespace nee {
 
 
 
+
 	inline void init_function(std::unordered_map<std::string, std::function<nee_Value(nee_State &)> > & fun) {
-		fun["print"] = print;
+
 		fun["exit"] = exit;
+		fun["print"] = print;
+	
 	}
 
 	inline nee_Value do_function(const char *functionname,nee_State &s) {
@@ -58,11 +63,6 @@ namespace nee {
 
 		return temp;
 	}
-
-
-
-
-
 
 }
 

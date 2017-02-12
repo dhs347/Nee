@@ -1,11 +1,4 @@
 #include "nee.h"
-#include "Number_Operator.h"
-
-
-#include "TokentoBlock.h"
-#include "Block.h"
-#include "Eval.h"
-
 
 #include <iostream>
 //debug
@@ -53,7 +46,7 @@ int main(int argc, char *argv[]){
 	//	std::cout << std::endl;
 	//}
 	//std::cout << (a/zero).ToString() << std::endl;
-	std::vector<std::string> temp{"print","(","\"123\\n456\"",")"};
+	std::vector<std::string> temp{"exit","(",")"};
 	std::vector<std::vector<std::string>> x; x.push_back(temp);
 	nee::variable_table vt;
 	std::vector<std::vector<std::string> > temp_b;

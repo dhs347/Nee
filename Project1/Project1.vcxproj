@@ -125,7 +125,6 @@
     <ClInclude Include="Number_Operator.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Float.h" />
-    <ClInclude Include="Parser.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="TokentoBlock.h" />
