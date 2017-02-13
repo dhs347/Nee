@@ -33,6 +33,7 @@ namespace nee {
 		if (str == "nil") {
 			_type = NEE_NIL;
 		}
+		
 		return _type;
 	}
 
@@ -165,24 +166,26 @@ namespace nee {
 
 
 
-		for (auto x : _condition) {
-			std::cout << x << std::endl;
-		}
-		for (auto x : blocks) {
-			for (auto y : x) {
-				std::cout << y << std::endl;
-			}std::cout <<  std::endl;
-		}
+		//for (auto x : _condition) {
+		//	std::cout << x << std::endl;
+		//}
+		//for (auto x : blocks) {
+		//	for (auto y : x) {
+		//		std::cout << y << std::endl;
+		//	}std::cout <<  std::endl;
+		//}
 
 		size_t _pos_ = 0;
+		//bug
+		//maybe fix
 		for (size_t i = 0;i < _condition.size(); ++i) {
-			if (_condition[i] != "false" || _condition[i] != "nil") {
+			if (_condition[i] != "false" && _condition[i] != "nil") {
 				_pos_ = i + 1;
 				break;
 			}
 			
 		}
-
+		//std::cout << "pos:" << _pos_ << '\n';
 		if (_pos_ == 0) {
 			if (_condition.size() < blocks.size()) {
 				//do else block
@@ -276,8 +279,9 @@ namespace nee {
 			for (size_t i = 0; i < tempblock.size();++i) {
 				if (is_variable(tempblock[i])) {
 					auto _v = _vt.find(tempblock[i]);
-
+					//std::cout << tempblock[i] << " ";
 					tempblock[i] = _v.value();
+					//std::cout << _v.value() << std::endl;
 				}
 			}
 
@@ -286,9 +290,10 @@ namespace nee {
 			//std::cout << value<< " " << get_type(value);
 			nee_type _t = get_type(value);
 
-			if (_t == NEE_STRING) {
-				value = String(value).ToString();
-			}
+			//fix bug
+			//if (_t == NEE_STRING) {
+			//	value = String(value).ToString();
+			//}
 
 			_vt.insert(_block[0],_t, value);
 		}else {
@@ -299,8 +304,9 @@ namespace nee {
 			for (size_t i = 0; i < tempblock.size(); ++i) {
 				if (is_variable(tempblock[i])) {
 					auto _v = _vt.find(tempblock[i]);
-
+					//std::cout << tempblock[i] << " ";
 					tempblock[i] = _v.value();
+					//std::cout << _v.value() << std::endl;
 				}
 			}
 
@@ -315,31 +321,31 @@ namespace nee {
 					if (_block[_block.size() - 1] != ")") {
 						throw;
 					}
+					
 					//fix bug
 					std::vector<std::string> tempblock = std::vector<std::string>(_block.begin() + 2, _block.end() - 1);
 
 					//translate
 					for (size_t i = 0; i < tempblock.size(); ++i) {
 						if (is_variable(tempblock[i])) {
+							//std::cout << tempblock[i] << " ";
 							auto _v = _vt.find(tempblock[i]);
 							tempblock[i] = _v.value();
+							//std::cout << _v.value() << std::endl;
 						}
 					}
+
+
 					//do hefa
 					std::vector<std::string> parameter;
 
 					nee_State arr_parameter;
 					for (size_t i = 0; i < tempblock.size(); ++i) {
 						if (tempblock[i] == ",") {
-							/*	std::cout << parameter[0] << std::endl;*/
+							//std::cout << parameter[0] << std::endl;
+							
 							std::string value = eval(parameter);
-
 							nee_type _t = get_type(value);
-
-							if (_t == NEE_STRING) {
-								value = String(value).ToString();
-							}
-
 							arr_parameter.push_back(std::pair<std::string, nee_type>(value, _t));
 							parameter.clear();
 						}
@@ -352,10 +358,9 @@ namespace nee {
 						std::string value = eval(parameter);
 
 						nee_type _t = get_type(value);
-
-						if (_t == NEE_STRING) {
-							value = String(value).ToString();
-						}
+						//if (_t == NEE_STRING) {
+						//	value = String(value).ToString();
+						//}
 
 						arr_parameter.push_back(std::pair<std::string, nee_type>(value, _t));
 						parameter.clear();
@@ -391,7 +396,6 @@ namespace nee {
 
 			}
 			else if (is_variable(block[i][0])) {
-				//std::cout << "var";
 				process_variable(fun,_v_table, block[i]);
 			}else if(is_function(block[i][0])){
 				process_function(fun, _v_table, block[i]);

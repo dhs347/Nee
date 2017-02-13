@@ -22,6 +22,7 @@ namespace nee {
 		std::string value() {
 			return _value;
 		}
+
 	private:
 		nee_type _type;
 		std::string _value;

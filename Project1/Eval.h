@@ -601,12 +601,13 @@ namespace nee {
 		if (temp.size() > 3) {
 			throw;
 		}
-
+		//std::cout << temp[1];
 		if (!is_legal_value(temp[1])) {
+			//std::cout << temp[1];
 			throw;
 		}
 		else {
-			//todo fix
+			//fix
 			if (is_string(temp[1])) {
 				temp[1] = String(temp[1]).ToNeeString();
 			}
@@ -618,6 +619,7 @@ namespace nee {
 	inline std::string eval(const std::vector<std::string> &block) {
 		int depth = 0;
 		int max_depth = 0;
+		
 		for (size_t i = 0; i < block.size(); ++i) {
 			if (depth < 0) {
 				throw;

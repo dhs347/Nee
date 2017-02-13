@@ -15,7 +15,11 @@ namespace nee {
 		//
 
 		for (size_t i = 0; i < s.size(); ++i) {
-			std::cout << s[i].first ;
+			//fix String bug
+			if (s[i].first.size() >=2 && s[i].first.at(0) == '\"') {
+				std::cout << String(s[i].first).ToString();
+			}
+			else std::cout << s[i].first ;
 
 			if (i != s.size() - 1) {
 				std::cout << ' ';
