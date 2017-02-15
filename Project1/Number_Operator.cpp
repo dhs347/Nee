@@ -4,7 +4,6 @@
 #include <algorithm> 
 #include <vector>
 
-#include <iostream>
 
 namespace nee {
 	std::string addStrings(std::string num1, std::string num2);

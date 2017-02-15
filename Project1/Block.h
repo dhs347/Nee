@@ -10,8 +10,6 @@
 #include "Library.h"
 
 
-#include <iostream>
-
 namespace nee {
 
 
@@ -42,7 +40,7 @@ namespace nee {
 			return false;
 		}
 		if (str == "if" || str == "elif" || str == "else" || str == "then" ||
-			str == "begin" || str == "end" || str == "while" || str == "loop" || str == "break" ||
+			str == "begin" || str == "end" || str == "while" || str == "loop" || 
 			str == "and" || str == "or" || str == "not" || str == "function" || str == "do"|| is_function(str)) {
 			return false;
 		}
@@ -263,6 +261,8 @@ namespace nee {
 	}
 	inline void process_while(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &fun, variable_table& _vt, const  std::vector<std::string> &_block) {
 		int _depth = 0;
+		std::vector<std::string> temp;
+		size_t pos = 0;
 		for (size_t i = 0; i < _block.size(); ++i) {
 			if (_block[i] == "loop" || _block[i] == "if" || _block[i] == "while") {
 				++_depth;
@@ -271,10 +271,47 @@ namespace nee {
 				--_depth;
 			}
 		}
+		if (_block[_block.size() - 1] != "end") {
+			throw;
+		}
 
 		if (_depth != 0) {
 			throw;
 		}
+
+
+		for (size_t i = 1; i < _block.size(); ++i) {
+
+			if (_block[i] != "do") {
+				temp.push_back(_block[i]);
+			}
+			else { pos = i + 1; break; }
+		}
+
+		std::vector<std::string> b = std::vector<std::string>(_block.begin() + pos, _block.end() - 1);
+		auto temp_block = TokentoBlock(b);
+		
+		while (true) {
+			//translate
+			std::vector<std::string> _condition = temp;
+			for (size_t i = 0; i < _condition.size(); ++i) {
+				if (is_variable(_condition[i])) {
+					auto _v = _vt.find(_condition[i]);
+					_condition[i] = _v.value();
+				}
+			}
+			std::string value = eval(_condition);
+			//std::cout << value << std::endl;
+
+			if (value != "nil" && value != "false") {
+				process_block(fun, _vt, temp_block);
+			}
+			else {
+				break;
+			}
+		}
+
+		
 	}
 
 	inline void process_variable(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &fun,variable_table& _vt, const  std::vector<std::string> &_block) {
@@ -405,13 +442,14 @@ namespace nee {
 				process_loop(fun, _v_table, block[i]);
 			}
 			else if (block[i][0] == "while") {
-
+				process_while(fun, _v_table, block[i]);
 			}
 			else if (is_variable(block[i][0])) {
 				process_variable(fun,_v_table, block[i]);
 			}else if(is_function(block[i][0])){
 				process_function(fun, _v_table, block[i]);
 			}
+			
 			else {
 				throw;
 			}
