@@ -40,7 +40,7 @@ namespace nee {
 			return false;
 		}
 		if (str == "if" || str == "elif" || str == "else" || str == "then" ||
-			str == "begin" || str == "end" || str == "while" || str == "loop" || 
+			str == "begin" || str == "end" || str == "while" || str == "loop" || str == "true" || str == "false" || str == "nil" ||
 			str == "and" || str == "or" || str == "not" || str == "function" || str == "do"|| is_function(str)) {
 			return false;
 		}

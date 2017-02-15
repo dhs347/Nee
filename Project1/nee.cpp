@@ -3,11 +3,11 @@
 
 int main(int argc, char *argv[]){
 
-	if (argc != 2) {
-		throw;
-	}
+	//if (argc != 2) {
+	//	throw;
+	//}
 
-	auto x = nee::TokentoBlock(nee::Tokenizer(argv[1]));
+	auto x = nee::TokentoBlock(nee::Tokenizer("C:\\Users\\42937\\Desktop\\x.nee"));
 	nee::variable_table vt;
 	std::unordered_map< std::string, std::function<nee::nee_Value(nee::nee_State &)> > fun;
 	//
