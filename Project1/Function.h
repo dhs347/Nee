@@ -15,4 +15,3 @@ namespace nee {
 	};
 }
 #endif // !__FUNCTION_H__
-
