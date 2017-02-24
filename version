@@ -1,7 +1,7 @@
-0.1
+version 0.1
 beta
 
-0.1.1
+version 0.1.1
 增加for语句
 a = 1;
 for ;; do
