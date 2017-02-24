@@ -1,0 +1,14 @@
+0.1
+beta
+
+0.1.1
+增加for语句
+a = 1;
+for ;; do
+    if a < 50 then
+        print("zz");
+    else
+        print(a,"\n");
+    end;
+end;
+print(a);
