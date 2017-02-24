@@ -1,4 +1,3 @@
-#pragma once
 #ifndef _TYPE_H__
 #define _TYPE_H__
 #include <string>

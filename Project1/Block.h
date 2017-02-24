@@ -39,7 +39,7 @@ namespace nee {
 		if (str.size() < 1) {
 			return false;
 		}
-		if (str == "if" || str == "elif" || str == "else" || str == "then" ||
+		if (str == "if" || str == "elif" || str == "else" || str == "then" || str == "for" ||
 			str == "begin" || str == "end" || str == "while" || str == "loop" || str == "true" || str == "false" || str == "nil" ||
 			str == "and" || str == "or" || str == "not" || str == "function" || str == "do"|| is_function(str)) {
 			return false;
@@ -70,7 +70,8 @@ namespace nee {
 
 
 		for (size_t i = 0; i < _block.size(); ++i) {
-			if (_block[i] == "loop" || _block[i] == "if" || _block[i] == "while") {
+			//fix
+			if (_block[i] == "loop" || _block[i] == "if" || _block[i] == "while" || _block[i] == "for") {
 				++_depth;
 			}
 			if (_block[i] == "end") {
@@ -104,7 +105,7 @@ namespace nee {
 
 		for (size_t i = pos;i < _block.size();++i) {
 			
-			if (_block[i] == "loop" || _block[i] == "if" || _block[i] == "while") {
+			if (_block[i] == "loop" || _block[i] == "if" || _block[i] == "while" || _block[i] == "for") {
 				++depth;
 			}
 			if (_block[i] == "end") {
@@ -213,7 +214,7 @@ namespace nee {
 	inline void process_loop(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &fun, variable_table& _vt, const  std::vector<std::string> &_block){
 		int _depth = 0;
 		for (size_t i = 0; i < _block.size(); ++i) {
-			if (_block[i] == "loop" || _block[i] == "if" || _block[i] == "while") {
+			if (_block[i] == "loop" || _block[i] == "if" || _block[i] == "while" || _block[i] == "for") {
 				++_depth;
 			}
 			if (_block[i] == "end") {
@@ -263,8 +264,9 @@ namespace nee {
 		int _depth = 0;
 		std::vector<std::string> temp;
 		size_t pos = 0;
+		auto temp_vt = _vt;
 		for (size_t i = 0; i < _block.size(); ++i) {
-			if (_block[i] == "loop" || _block[i] == "if" || _block[i] == "while") {
+			if (_block[i] == "loop" || _block[i] == "if" || _block[i] == "while" || _block[i] == "for") {
 				++_depth;
 			}
 			if (_block[i] == "end") {
@@ -311,7 +313,81 @@ namespace nee {
 			}
 		}
 
+		_vt = temp_vt;
+
 		
+	}
+	void process_variable(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &fun, variable_table& _vt, const  std::vector<std::string> &_block);
+	inline void process_for(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &fun, variable_table& _vt, const  std::vector<std::string> &_block) {
+		std::vector<std::string> a_blocks;
+		std::vector<std::string> b_blocks;
+		std::vector<std::string> c_blocks;
+		size_t pos = 0;
+		for (size_t i = 1; i < _block.size(); ++i) {
+			if (_block[i] != ";") {
+				a_blocks.push_back(_block[i]);
+			}
+			else {
+				pos = i + 1;
+				break;
+			}
+		}
+		auto temp_vt = _vt;
+		if(a_blocks.size() != 0)
+			process_variable(fun, _vt, a_blocks);
+
+		for (size_t i = pos;i < _block.size(); ++i) {
+			if (_block[i] != ";") {
+				b_blocks.push_back(_block[i]);
+			}
+			else {
+				pos = i + 1;
+				break;
+			}
+		}
+		for (size_t i = pos; i < _block.size(); ++i) {
+			if (_block[i] != "do") {
+				c_blocks.push_back(_block[i]);
+			}
+			else {
+				c_blocks.push_back(";");
+				pos = i + 1;
+				break;
+			}
+		}
+
+		std::vector<std::string> loop_block(_block.begin() + pos, _block.end() - 1);
+
+
+		std::vector<std::string> while_block = { "while" };
+
+		if (b_blocks.size() == 0) {
+			while_block.push_back("true");
+			while_block.push_back("do");
+		}
+		else {
+			for (size_t i = 0;i < b_blocks.size();++i) {
+				while_block.push_back(b_blocks[i]);
+			}
+			while_block.push_back("do");
+		}
+
+		for (size_t i = 0; i < loop_block.size(); ++i) {
+			while_block.push_back(loop_block[i]);
+		}
+		for (size_t i = 0; i < c_blocks.size(); ++i) {
+			while_block.push_back(c_blocks[i]);
+		}
+		while_block.push_back("end");
+		//fix ;bug
+		//while_block.push_back(";");
+
+		process_while(fun, _vt, while_block);
+
+		//cancel a_block
+
+		_vt = temp_vt;
+
 	}
 
 	inline void process_variable(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &fun,variable_table& _vt, const  std::vector<std::string> &_block) {
@@ -448,6 +524,9 @@ namespace nee {
 				process_variable(fun,_v_table, block[i]);
 			}else if(is_function(block[i][0])){
 				process_function(fun, _v_table, block[i]);
+			}
+			else if (block[i][0] == "for") {
+				process_for(fun, _v_table, block[i]);
 			}
 			
 			else {

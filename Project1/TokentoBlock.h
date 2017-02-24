@@ -23,14 +23,15 @@ namespace nee {
 		auto beginit = temptoken.begin();
 		for (auto it = temptoken.begin();it != temptoken.end(); ++it) {
 			//todo
-			//loop while if
-			if (*it == "loop"|| *it == "while" || *it == "if" ) {
+			//loop while if 
+			//add for
+			if (*it == "loop"|| *it == "while" || *it == "if"  || *it == "for") {
 				std::vector <std::string> singal_block;
 				size_t depth = 0;
 	
 				for (;it != temptoken.end(); ++it) {
 					singal_block.push_back(*it);
-					if (*it == "loop" || *it == "while" || *it == "if") {
+					if (*it == "loop" || *it == "while" || *it == "if" || *it == "for") {
 						++depth;
 					}
 					if (*it == "end") {

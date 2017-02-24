@@ -6,6 +6,7 @@
 #include <cctype> //isalpha
 
 
+//#include <iostream>
 
 namespace nee {
 
@@ -43,6 +44,10 @@ namespace nee {
 		return false;
 	}
 	inline std::vector<std::string> Tokenizer(const std::string &filename) {
+
+
+		//for bug
+
 		std::ifstream ifs(filename.c_str(), std::ifstream::binary);
 		ifs.seekg(0, ifs.end);
 		int length = ifs.tellg();
@@ -58,6 +63,7 @@ namespace nee {
 		Syntax_statement stmt;
 
 		for (int i = 0; i < length; ++i) {
+			//std::cout << buffer[i] << std::endl;
 			if (buffer[i] == '_') {
 				tempStr.push_back('_');
 			}
