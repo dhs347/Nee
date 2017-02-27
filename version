@@ -12,3 +12,22 @@ for ;; do
     end;
 end;
 print(a);
+
+
+version 0.1.2
+增加 for do等价于 for ;; do。
+for ;; do
+    if a < 50 then
+        print("zz");
+    else
+        print(a,"\n");
+    end;
+end;
+以上代码等于
+for do
+    if a < 50 then
+        print("zz");
+    else
+        print(a,"\n");
+    end;
+end;
