@@ -320,13 +320,20 @@ namespace nee {
 	}
 	void process_variable(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &fun, variable_table& _vt, const  std::vector<std::string> &_block);
 	inline void process_for(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &fun, variable_table& _vt, const  std::vector<std::string> &_block) {
+		std::vector<std::string> temp__block = _block;
+		if (_block.at(1) == "do") {
+			std::vector<std::string> __temp{ ";",";" };
+			temp__block.insert(temp__block.begin() + 1, __temp.begin(), __temp.end());
+
+		}
+
 		std::vector<std::string> a_blocks;
 		std::vector<std::string> b_blocks;
 		std::vector<std::string> c_blocks;
 		size_t pos = 0;
-		for (size_t i = 1; i < _block.size(); ++i) {
-			if (_block[i] != ";") {
-				a_blocks.push_back(_block[i]);
+		for (size_t i = 1; i < temp__block.size(); ++i) {
+			if (temp__block[i] != ";") {
+				a_blocks.push_back(temp__block[i]);
 			}
 			else {
 				pos = i + 1;
@@ -337,18 +344,18 @@ namespace nee {
 		if(a_blocks.size() != 0)
 			process_variable(fun, _vt, a_blocks);
 
-		for (size_t i = pos;i < _block.size(); ++i) {
-			if (_block[i] != ";") {
-				b_blocks.push_back(_block[i]);
+		for (size_t i = pos;i < temp__block.size(); ++i) {
+			if (temp__block[i] != ";") {
+				b_blocks.push_back(temp__block[i]);
 			}
 			else {
 				pos = i + 1;
 				break;
 			}
 		}
-		for (size_t i = pos; i < _block.size(); ++i) {
-			if (_block[i] != "do") {
-				c_blocks.push_back(_block[i]);
+		for (size_t i = pos; i < temp__block.size(); ++i) {
+			if (temp__block[i] != "do") {
+				c_blocks.push_back(temp__block[i]);
 			}
 			else {
 				c_blocks.push_back(";");
@@ -357,7 +364,7 @@ namespace nee {
 			}
 		}
 
-		std::vector<std::string> loop_block(_block.begin() + pos, _block.end() - 1);
+		std::vector<std::string> loop_block(temp__block.begin() + pos, temp__block.end() - 1);
 
 
 		std::vector<std::string> while_block = { "while" };
