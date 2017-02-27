@@ -213,6 +213,7 @@ namespace nee {
 	}
 	inline void process_loop(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &fun, variable_table& _vt, const  std::vector<std::string> &_block){
 		int _depth = 0;
+		auto temp_vt = _vt;
 		for (size_t i = 0; i < _block.size(); ++i) {
 			if (_block[i] == "loop" || _block[i] == "if" || _block[i] == "while" || _block[i] == "for") {
 				++_depth;
@@ -258,7 +259,7 @@ namespace nee {
 				break;
 			}
 		}
-
+		_vt = temp_vt;
 	}
 	inline void process_while(std::unordered_map< std::string, std::function<nee_Value(nee_State &)> > &fun, variable_table& _vt, const  std::vector<std::string> &_block) {
 		int _depth = 0;
