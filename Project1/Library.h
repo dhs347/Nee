@@ -4,8 +4,7 @@
 #include <cstdlib>
 #include <functional>
 #include "Type.h"
-
-
+#include "String.h"
 
 
 namespace nee {
