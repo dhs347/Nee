@@ -40,8 +40,16 @@ namespace nee {
 		return "nil";
 	}
 
+	inline  nee_Value system(nee_State &s) {
+		if (s.size() != 1) {
+			throw;
+		}
+		::system(String(s[0].first).ToString().c_str());
+		return "nil";
+	}
+
 	inline bool is_function(const std::string&str) {
-		if (str == "exit" || str == "print") {
+		if (str == "exit" || str == "print" || str == "system") {
 			return true;
 		}
 		return false;
@@ -52,6 +60,7 @@ namespace nee {
 
 		fun["exit"] = exit;
 		fun["print"] = print;
+		fun["system"] = system;
 	
 	}
 
