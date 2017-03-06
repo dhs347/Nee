@@ -454,7 +454,10 @@ namespace nee {
 					if (_block[_block.size() - 1] != ")") {
 						throw;
 					}
-					
+					//fix
+					if(_block.at(1) != "("){
+						throw;
+					}
 					//fix bug
 					std::vector<std::string> tempblock = std::vector<std::string>(_block.begin() + 2, _block.end() - 1);
 
